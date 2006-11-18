@@ -1,0 +1,53 @@
+Arcboot is the bootloader used on SGI IP22 machines (Indy and Indigo2) and
+the SGI IP32 (O2) to boot Linux from an Ext{2,3}-filesystem.
+
+To install arcboot type:
+
+"/usr/sbin/arcboot <name_of_disk>" as root.
+
+where <name_of_disk> is the disk on which arcboot will be installed. To let
+this work the disk *must* have an SGI disklabel. Afterwards copy arcboot.conf
+into /etc/ and adjust it to your needs.
+
+Arcboot parses the PROM variable OSLoadPartition to find arcboot.conf therefore
+/etc/ has to be on the same partition as the kernel.
+It boots the label given in OSLoadFilename or on the command line (see below).
+
+If it can't fine the label in arcboot.conf it tries to boot the file 
+OSLoadPartition/OSLoadFilename, allowing you to boot any file on an ext2
+filesystem by adjusting OSLoadPartition accordingly (this might be helpful if
+your freshly installed kernel doesn't boot).
+
+Besides the append="..." line in /etc/arcboot.conf arcboot also appends the
+value of the prom variable OSLoadOptions to the kernel's command line. This
+allows you to override the arcboot.conf's kernel command line.
+
+If you enter the prom and boot via the "boot" command you can pass additional
+parameters to the kernel. E.g.:
+
+boot linux single console=ttyS0 root=/dev/sda2
+
+will boot the label "linux" from arcboot.conf and append to additional
+arguments given above. Or
+
+boot /boot/vmlinux single console=ttyS0 root=/dev/sda2
+
+will boot the file with the absolute path OSLoadPartition/boot/vmlinux with the
+same arguments as above. Note that OSLoadPartition must be an partition name
+as understood by ARCS (like scsi(0)disk(1)rdisk(0)partition(0)).
+
+Note: arcboot can only load ELF kernels. ECOFF is (and will not be) supported.
+
+For tftpbooting please refer to the tip22 package.
+
+Acknowledgements:
+ - arcboot is based on the arc-bootloader for SGI visual workstations written
+   by Ralf Baechle
+ - the e2fslib dir is basically a stripped down verion of e2fsprogs 1.25 as
+   found on http://sourceforge.net/projects/e2fsprogs and written by Theodore
+   T'so <tytso@thunk.org> compiled with -nopic. 
+ - most of the config file parsing is borrowed from delo by Florian Lohoff
+   <flo@rfc822.org>. Additional thanks to him for a weekend of input, testing
+   & patches.
+
+ -- Guido Guenther <agx@sigxcpu.org>, Sun, 26 Apr 2003 20:29:43 +0100

@@ -1,0 +1,104 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+realver := $(shell dpkg-parsechangelog | awk -F' ' '/^Version:/ {print $$2}' | awk -F- '{print $$1}')
+
+PREFIX_ARCB=${CURDIR}/debian/arcboot
+BIN_ARCB=usr/sbin
+LIB_ARCB=usr/lib/arcboot
+
+PREFIX_TIP22=${CURDIR}/debian/tip22
+BIN_TIP22=usr/sbin
+LIB_TIP22=usr/lib/tip22
+
+architecture=$(dpkg --print-architecture)
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	# Add here commands to configure the package.
+
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+
+	# update the version string
+	echo "#define __ARCSBOOT_VERSION__ \"${realver}\"" > common/version.h
+	# build the package
+	$(MAKE) build-subarch-indep
+	$(MAKE) clean-subarch-dep
+	$(MAKE) SUBARCH=IP32 build-subarch-dep
+	cp ext2load/ext2load arcboot.ip32
+	$(MAKE) clean-subarch-dep
+	$(MAKE) SUBARCH=IP22 build-subarch-dep
+	cp ext2load/ext2load arcboot.ip22
+	touch build-stamp
+
+clean:
+	dh_testdir
+	rm -f build-stamp configure-stamp
+
+	# Add here commands to clean up after the build process.
+	-$(MAKE) clean
+	-rm -f arcboot.ip22 arcboot.ip32
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	# install arcboot into debian/arcboot
+	install -m 644 arcboot.ip22 ${PREFIX_ARCB}/${LIB_ARCB}/arcboot.ip22
+	install -m 644 arcboot.ip32 ${PREFIX_ARCB}/${LIB_ARCB}/arcboot.ip32
+	install -m 755 scripts/arcboot ${PREFIX_ARCB}/${BIN_ARCB}/arcboot
+
+	# install tip22 into debian/tip22
+	$(MAKE) PREFIX=${PREFIX_TIP22} BINDIR=${BIN_TIP22} LIBDIR=${LIB_TIP22} -C arclib install
+	$(MAKE) PREFIX=${PREFIX_TIP22} BINDIR=${BIN_TIP22} LIBDIR=${LIB_TIP22} -C tip22 install
+
+# Build architecture-independent files here.
+binary-indep: build install
+# nothing to do
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdebconf
+	dh_installdocs
+	dh_installexamples etc/arcboot.conf -parcboot
+	dh_installexamples tip22/kernel/ -ptip22
+	dh_installmenu
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+	dh_installcron
+	dh_installman
+	dh_installinfo
+#	dh_undocumented
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

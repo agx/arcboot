@@ -1,0 +1,41 @@
+#!/bin/bash
+# $Id: postinst,v 1.1 2004/11/29 10:39:38 ladis Exp $
+
+set -e
+
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+case "$1" in
+    configure)
+    	db_get arcboot/boot_device || true
+
+	if [ ! -f /etc/arcboot.conf ]; then
+	    # create /etc/arcboot.conf
+	    ROOTDEVICE=`mount | grep -s '[[:space:]]/[[:space:]]' | cut -d' ' -f 1`
+
+cat << EOF > /etc/arcboot.conf
+# arcboot.conf
+#
+label=linux
+  image=/vmlinux
+  append="root=$ROOTDEVICE"
+EOF
+	fi
+    	/usr/sbin/arcboot $RET
+
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

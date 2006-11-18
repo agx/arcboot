@@ -1,0 +1,40 @@
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+#    Developers do not need to manually edit POT or PO files.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: arcboot 0.3.7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-08-05 09:42+0200\n"
+"PO-Revision-Date: 2004-01-12 22:02+0900\n"
+"Last-Translator: Hideki Yamane <henrich@samba.gr.jp>\n"
+"Language-Team: Japanese <debian-japanese@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Description
+#: ../templates:4
+msgid "Where to put arcboot?"
+msgstr "¤É¤³¤Ë arcboot ¤ò½ñ¤­¹þ¤ß¤Þ¤¹¤«?"
+
+#. Description
+#: ../templates:4
+msgid ""
+"Arcboot must be put into the volume header of a disk with a SGI disklabel. "
+"Usually the volume header of /dev/sda is used. Please give the device name "
+"of the disk you want to put arcboot onto."
+msgstr "arcboot ¤Ï SGI ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤ò»ý¤Ã¤Æ¤¤¤ë¥Ç¥£¥¹¥¯¤Î¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¤Ë½ñ¤­¹þ¤Þ¤Í¤Ð¤Ê¤ê¤Þ¤»¤ó¡£"
+"ÄÌ¾ï¡¢/dev/sda ¤Î¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¤¬»ÈÍÑ¤µ¤ì¤Þ¤¹¡£arcboot ¤òÇÛÃÖ¤·¤¿¤¤¥Ç¥Ð¥¤¥¹Ì¾¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+

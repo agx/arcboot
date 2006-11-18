@@ -1,0 +1,243 @@
+arcboot (0.3.8.8) unstable; urgency=low
+
+  * Non-Maintainer Upload, with maintainer consent.
+  * scripts/arcboot:
+    + Fix syntax error when $IMAGE isn't found (closes: #329111).
+  * debian/control:
+    + Bumped Standards-Version to 3.7.2 (no changes).
+    + Added ${misc:Depends} to arcboot's Depends, to get the debconf
+      dependency.
+  * Added spanish debconf translation, courtesy of César Gómez Martín
+    (closes: #333875).
+  * Added swedish debconf translation, courtesy of Daniel Nylander
+    (closes: #331295).
+  * Fixed po/ja.po Content-Type (seems to be UTF-8 instead of EUC-JP ?)
+
+ -- Julien BLACHE <jblache@debian.org>  Mon, 14 Aug 2006 11:34:48 +0000
+
+arcboot (0.3.8.7) unstable; urgency=low
+
+  * Add vietnamese translation, thanks Clytie Siddall (Closes: #313114).
+  * Add czech translation, thanks Miroslav Kure (Closes: #317662).
+  * Switch from the local e2fslib to the up-to-date libext2fs-nopic.a
+    in Debian, but don't delete the old version for now.
+  * Avoid inclusion of kernel headers.
+
+ -- Thiemo Seufer <ths@debian.org>  Sat, 17 Sep 2005 20:15:35 +0200
+
+arcboot (0.3.8.6) unstable; urgency=low
+
+  * Allow ELF64 kernels for tip22/tip32.
+
+ -- Thiemo Seufer <ths@debian.org>  Sun, 06 Feb 2005 01:51:01 +0100
+
+arcboot (0.3.8.5) unstable; urgency=low
+
+  * Add da debconf translation by Morten Brix Pedersen, thanks
+    (Closes: #276691).
+  * Add tip32 for IP32 machines.
+  * Rework build system.
+  * Vastly improved loader performance, thanks Keith Wesolowski.
+
+ -- Thiemo Seufer <ths@debian.org>  Mon, 31 Jan 2005 21:24:00 +0100
+
+arcboot (0.3.8.4) unstable; urgency=low
+
+  * fix compilation with gcc-3.3 for tip22 also (Closes: #273951)
+  * mention IP32 in arcboots package description
+
+ -- Guido Guenther <agx@debian.org>  Mon, 27 Sep 2004 16:45:11 +0200
+
+arcboot (0.3.8.3) unstable; urgency=low
+
+  * fix IP32/O2 subarch detection again, I hate /proc/cpuinfo changes
+  * the 'de' debconf translation was in the last upload already
+    (Closes: #250572)
+  * finally tested it on IP32 myself and it work{s,ed}
+  * fixup linker script to work with gcc-3.3 too
+
+ -- Guido Guenther <agx@debian.org>  Sat, 25 Sep 2004 23:32:38 +0200
+
+arcboot (0.3.8.2) unstable; urgency=low
+
+  * /usr/sbin/arcboot uses file so depend on it (Closes: #236970)
+  * add nl debconf translation by Luk Claes, thanks (Closes: #244632)
+
+ -- Guido Guenther <agx@debian.org>  Tue, 20 Apr 2004 10:30:14 +0200
+
+arcboot (0.3.8.1) unstable; urgency=low
+
+  * correct subarch detection for IP32
+
+ -- Guido Guenther <agx@debian.org>  Tue,  2 Mar 2004 12:01:14 +0100
+
+arcboot (0.3.8) unstable; urgency=low
+
+  * add support to load 64bit kernels (by Vivien Chappelier and Ilya Volynets)
+  * hack up makefile to allow for easier per subarch builds
+  * debian/rules: build and include arcboot.ip32 in the package. 
+  * modify arcboot script to select the correct arcboot.subarch when
+    putting the loader in the volume header
+  * use ext2_fs.h from e2fslib instead of linux/ext2fs.h to not depend
+    on kernel headers
+  * add pt translation by Bruno Rodrigues, thanks (Closes: #216392)
+  * add pt_BR translation by Andre Luis Lopes, thanks (Closes: #228285)
+  * add ja translaton by Hideki Yamane, thanks (Closes: #234087)
+
+ --  Guido Guenther <agx@debian.org>  Mon,  1 Mar 2004 12:42:06 +0100
+
+arcboot (0.3.7) unstable; urgency=low
+
+  * postinst: call arcboot after arcboot.conf was created
+  * /usr/sbin/arcboot: abort if we don't find a configuration file
+  * fix typo in control file, thanks to Julien Blache <jblache at debian.org>,
+    (Closes: #192810)
+  * use po-debconf, patch by Christian Perrier <bubulle at ebian.org>, thanks!
+    (Closes: #205819)
+  * add French translation, thanks again Christian! (Closes: #206586)
+  * fix "Upstream Authors(s)" in copyright file
+  * reformat debian/control to 80 characters
+  * bump Standards-Version to 3.6.1
+
+ -- Guido Guenther <agx@debian.org>  Sun, 31 Aug 2003 22:53:20 +0200
+
+arcboot (0.3.6) unstable; urgency=low
+
+  * fix command line handling, now things like
+    	boot linux root=/dev/sda1 single
+    should work as expected, no need to mess with OSLoadOptions
+  * fix booting arbitrary files
+  	boot /vmlinux root=/dev/sda1
+    will now properly boot OSLoadPartition/vmlinux
+  * search for OSLoadPartition if the envvar is bogus
+  * add missing prototypes, cleanup printf length modifiers
+  * move some common definitions to subarch.h
+  * use gcc-2.95
+  * adding other 32bit IPs to arcboot is now a two line change
+    in common/subarch.h
+  * arcboot script now prints what it's doing
+  * postrm: silent grep on new installs
+  * echo 4 > debian/compat
+  * Build-Depend: on debhelper (>=4)
+  * Bump Standards Version to 3.5.9
+  * add ${misc:Depends}
+
+ -- Guido Guenther <agx@debian.org>  Sat, 26 Apr 2003 22:01:14 +0200
+
+arcboot (0.3.5) unstable; urgency=low
+
+  * relax arcboots ELF check to make it recongnize kernels built with
+    newer binutils
+  * make strcpy copy the trailing '\0', thanks to Florian Lohoff for the patch
+  * compile version number from changelog into arcsboot/tip22
+  * spelling fixes
+  * minor debian/rules cleanup
+
+ -- Guido Guenther <agx@debian.org>  Fri, 27 Sep 2002 14:06:36 +0200
+
+arcboot (0.3.4) unstable; urgency=low
+
+  * don't let ext2fs errors crash the loader
+  * remove dead code (larc.c)
+  * Fix description, thanks Joey! (Closes: #153084)
+
+ -- Guido Guenther <agx@debian.org>  Tue, 16 Jul 2002 01:05:49 +0200
+
+arcboot (0.3.3) unstable; urgency=low
+
+  * tip22 calculated the highest address of the kernel's memory image
+    wrong - fixed
+  * tip22 now passes everything in an append="...." statement on to the kernel's
+    commandline
+  * improve {s,f}printf (handle "%p","%lx", be more graceful on unimplemented
+    format specifiers)
+  * make tip22 script more failsafe
+  * removed all printing of version numbers/dates on startup
+  * typo fixes, minor doc updates
+
+ -- Guido Guenther <agx@debian.org>  Thu, 16 May 2002 00:49:28 +0200
+
+arcboot (0.3.2) unstable; urgency=low
+
+  * implemented "tip22" bootloader. It embeds kernel and initrd in one
+    ECOFF binary. This can be used for either tftp- or CD-booting and makes
+    addinitrd in the mips-tools package obselete.
+  * update package built to include tip22
+  * add snprintf() to arclib (needed by tip22)
+  * remove snprintf() stub from ext2io.c
+  * Makefile and docu cleanups
+  * add a rudimentary manpage for tip22 
+
+ -- Guido Guenther <agx@debian.org>  Thu,  9 May 2002 22:01:11 +0200
+
+arcboot (0.3.1) unstable; urgency=low
+
+  * move arcboot's load address 1MB upwards to let more room for larger
+    kernels
+  * check if the kernels in /etc/arcboot.conf are really ELF (Closes: #144728)
+  * add some logic to determine the vh arcboot should go into in arcboot.config
+  * update TODO
+
+ -- Guido Guenther <agx@debian.org>  Sat, 23 Feb 2002 20:21:50 +0100
+
+arcboot (0.3) unstable; urgency=low
+
+  * update manpage, README and package description
+  * disable debugging output
+
+ -- Guido Guenther <agx@debian.org>  Sun, 10 Feb 2002 20:04:55 +0100
+
+arcboot (0.2) unstable; urgency=low
+
+  * close ITP (Closes: #119163)
+  * the diff was far larger than the .orig.tar.gz so make this a
+    debian native package
+  * add debconf dependency
+  * update manpage 
+  * apply patch from Flo <flo@rfc822.org> with an updated linker scipt
+    removing the mips-tools dependency
+  * generate /etc/arcboot.conf if it doesn't exist
+
+ -- Guido Guenther <agx@debian.org>  Sat,  9 Feb 2002 02:30:04 +0100
+
+arcboot (0.1-3) experimental; urgency=low
+
+  * replace "\n" by "\n\r" for proper output on serial consoles
+  * apply patch from Florian Lohoff to fix bad OSLoadFilename
+    and formatting
+  * use elf2ecoff to convert arcboot into an ecoff image
+  * if OSLoadOptions starts with "/" it's a kernel name otherwise
+    a label in arcboot.conf
+  * remove shlibs from Depends in control file
+  * change loadaddress of the bootloader 0x8820f000
+  * add cacheflush before jumping into the kernel
+  * add debconf frontend
+  * add missing -d in dvhtool call to /usr/sbin/arcboot
+  * finally remove run.S and disable larc build
+
+ -- Guido Guenther <agx@debian.org>  Fri,  8 Feb 2002 23:42:18 +0100
+
+arcboot (0.1-2) unstable; urgency=low
+
+  * added config file parsing (an example is in /u/s/d/arcboot/examples)
+  * added a small script to move arcboot into the volume header
+
+ -- Guido Guenther <agx@debian.org>  Sun, 18 Nov 2001 18:09:49 +0100
+
+arcboot (0.1-1) unstable; urgency=low
+
+  * Initial Release.
+  * warning fixes
+  * make memset & free return the same values as the libc versions
+  * build with -mno-abicalls -G 0 -fno-pic, so the prom can deal with it
+  * use basically the kernel's linker script to link arcboot
+  * move all addresses into KSEG0
+  * IP22 is ARCS not ARC (MEMORYTYPE in arc.h)
+  * IP22 is big endian (LARGEINTEGER in arc.h)
+  * remove run.S and call the kernel entry via a C function call
+  * add everything that is needed from e2fsprogs so we can build
+    a libe2fs with -fnopic -mno-abicalls -G 0
+  * make sure arcboot doesn't use the system ext2fs header files
+
+ -- Guido Guenther <agx@debian.org>  Mon, 12 Nov 2001 00:21:31 +0100
+

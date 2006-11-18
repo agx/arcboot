@@ -1,0 +1,32 @@
+How to create the boot image:
+-----------------------------------
+
+tip22 <vmlinux> <initrd> <outputfile>
+tip32 <vmlinux> <initrd> <outputfile>
+
+- vmlinux is an ELF Linux kernel. For versions before 2.6.9 you need to
+  apply an extra patch for correct commandline parsing, see
+  /usr/share/doc/tip22/examples.
+- initrd is the gzip compressed initial ramdisk you want add
+- outputfile is the bootimage. It is in ECOFF format for ip22 and in
+  ELF format for ip32. You can for example tfpboot this image on an SGI
+  Indy using the bootp(): command in the prom.
+
+it basically works like this:
+-----------------------------
+- tftpload.o is a relocatable object created during package build time
+- the tip22 script converts the ramdisk and vmlinux to relocatable
+  objects using linker scripts including symbols that mark the begin
+  and the end of kernel and ramdisk
+- those are linked together into the output file using yet another
+  linker script
+- when executed by the prom the embedded loader:
+   - memcopies the kernel to its loadaddress
+   - memcopies the initrd after the kernel to a page boundary
+   - parses the command line and everything within an append="..."
+     statement is passed on to the kernel, e.g.
+     'bootp(): append="console=ttyS0"'
+   - jumps into the kernel passing the start address and size of the
+     initrd on the command line
+
+ -- Thu,  15 May 2002 23:07:18 +0200 Guido Guenther <agx@sigxcpu.org>

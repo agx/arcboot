@@ -1,0 +1,27 @@
+.TH "TIP32" "8" "17 November 2004" "" ""
+.SH NAME
+tip32 \- create "piggyback" style boot images for SGI/MIPS IP32 machines
+.SH SYNOPSIS
+
+\fB/usr/sbin/tip32\fR <vmlinux> <initrd> <outfile>
+
+.SH "DESCRIPTION"
+.PP
+\fBtip32\fR is used on SGI/MIPS IP32 machines (SGI O2) to embed kernel and
+initial ramdisk into one ELF image which can then be booted by the ARCS PROM.
+This is usually used to create tftp boot images.
+.SH "USAGE"
+.PP
+<vmlinux> is the ELF kernel you want to embed into the bootimage
+.P
+<initrd> is the (optionally gzip compressed) initial ramdisk
+.P
+<outfile> is the resulting tftpboot image
+
+.SH "SEE ALSO"
+.PP
+arcboot(8).
+.SH "AUTHORS"
+Tip32 is an adaption of tip22, which is the equivalent for SGI IP22 machines.
+Tip22 was written by Guido Günther <agx@sigxcpu.org> and borrows heavily
+from arcboot written by Ralf Bächle <ralf@gnu.org> and Guido Günther.

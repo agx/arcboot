@@ -1,0 +1,21 @@
+common:
+-------
+ - add gzip decompression
+ - add iso9660 suport
+ - teach arcboot about sgi disklabels
+ - add support for other OSs (NetBSD,IRIX)
+ - split out code common to arcboot and tip22
+ - relink to proper loadaddr on install
+ - determine kernel's loaddr from system type during boot
+
+arclib:
+-------
+
+arcboot:
+--------
+ - add support for initrd
+
+tip22:
+------
+
+ -- Guido Guenther <agx@sigxcpu.org> Thu,  15 May 2002 19:57:00 +0200

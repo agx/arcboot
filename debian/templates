@@ -1,0 +1,7 @@
+Template: arcboot/boot_device
+Type: string
+Default: /dev/sda
+_Description: Where to put arcboot?
+ Arcboot must be put into the volume header of a disk with a SGI disklabel.
+ Usually the volume header of /dev/sda is used. Please give the device name
+ of the disk you want to put arcboot onto.

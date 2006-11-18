@@ -1,0 +1,13 @@
+This package was debianized by Guido Guenther <agx@debian.org> on
+Wed, 24 Oct 2001 19:28:10 +0200.
+
+Arcboot was downloaded from oss.sgi.com's cvs repository. See README.Debian for
+details. tip22 was added later as native debian part.
+
+Upstream Authors: Ralf Baechle, Guido Günther
+
+Copyright:
+
+ You are free to distribute this software under the terms of the GNU General
+ Public License. The full text of this license can be found in the file
+ /usr/share/common-licenses/GPL

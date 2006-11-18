@@ -1,0 +1,78 @@
+OUTPUT_FORMAT("@@OUTPUTFORMAT@@")
+OUTPUT_ARCH(mips)
+ENTRY(_start)
+SECTIONS
+{
+  /* XXX: place the loader after the kernel */
+  . = @@LOADADDR@@;
+
+  /* read-only */
+  _text = .;			/* Text and read-only data */
+  .text : {
+    _ftext = .;
+    *(.text .text.*)
+    *(.rodata*)
+  } =0
+
+  _etext = .;			/* End of text section */
+  PROVIDE (etext = .);
+
+  . = ALIGN(16);
+
+  /* writeable */
+  .data : {
+    _fdata = .;
+    *(.data .data.*)
+  } =0
+
+  _gp = ALIGN(16) + 0x7ff0;
+  .lit8 : { *(.lit8) }
+  .lit4 : { *(.lit4) }
+  /* We want the small data sections together, so single-instruction offsets
+     can access them all, and initialized data all before uninitialized, so
+     we can shorten the on-disk segment size.  */
+  .sdata : { *(.sdata) }
+
+  _edata = .;
+  PROVIDE (edata = .);
+
+  __bss_start = .;
+  .sbss : {
+    *(.sbss)
+    *(.scommon)
+  }
+  .bss : {
+    _fbss = .;
+    *(.dynbss)
+    *(.bss .bss.*)
+    *(COMMON)
+    /* Align here to ensure that the .bss section occupies space up to
+       _end.  Align after .bss to ensure correct alignment even if the
+       .bss section disappears because there are no input sections.  */
+    . = ALIGN(32 / 8);
+  }
+  . = ALIGN(32 / 8);
+  __bss_stop = .;
+  _end = .;
+  PROVIDE (end = .);
+
+  /* Sections to be discarded */
+  /DISCARD/ : {
+        *(.text.exit)
+        *(.data.exit)
+        *(.exitcall.exit)
+	*(.stab)
+	*(.stabstr)
+	*(.pdr)
+	*(.note)
+	*(.reginfo)
+	*(.options)
+	*(.MIPS.options)
+        *(.debug*)
+        *(.line)
+        *(.mdebug*)
+        *(.comment*)
+        *(.gptab*)
+        *(.note)
+  }
+}

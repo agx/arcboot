@@ -1,0 +1,88 @@
+Index: arch/mips/kernel/setup.c
+===================================================================
+RCS file: /cvs/linux/arch/mips/kernel/setup.c,v
+retrieving revision 1.96.2.12
+diff -u -u -r1.96.2.12 setup.c
+--- arch/mips/kernel/setup.c	2002/02/15 21:05:48	1.96.2.12
++++ arch/mips/kernel/setup.c	2002/05/09 17:17:59
+@@ -650,6 +650,38 @@
+ 	}
+ }
+ 
++static inline void parse_rd_cmdline(unsigned long* rd_start, unsigned long* rd_end)
++{
++	char c = ' ', *to = command_line, *from = saved_command_line;
++	int len = 0;
++	unsigned long rd_size = 0;
++
++	for (;;) {
++		/*
++		 * "rd_start=0xNNNNNNNN" defines the memory address of an initrd
++		 * "rd_size=0xNN" it's size
++		 */
++		if (c == ' ' && !memcmp(from, "rd_start=", 9)) {
++			if (to != command_line)
++				to--;
++			(*rd_start) = memparse(from + 9, &from);
++		}
++		if (c == ' ' && !memcmp(from, "rd_size=", 8)) {
++			if (to != command_line)
++				to--;
++			rd_size = memparse(from + 8, &from);
++		}
++		c = *(from++);
++		if (!c)
++			break;
++		if (CL_SIZE <= ++len)
++			break;
++		*(to++) = c;
++	}
++	*to = '\0';
++	(*rd_end) = (*rd_start) + rd_size;
++}
++
+ void __init setup_arch(char **cmdline_p)
+ {
+ 	void atlas_setup(void);
+@@ -674,10 +706,7 @@
+ 
+ 	unsigned long bootmap_size;
+ 	unsigned long start_pfn, max_pfn, max_low_pfn, first_usable_pfn;
+-#ifdef CONFIG_BLK_DEV_INITRD
+-	unsigned long tmp;
+-	unsigned long* initrd_header;
+-#endif
++	unsigned long end = &_end;
+ 
+ 	int i;
+ 
+@@ -828,22 +857,18 @@
+ #define MAXMEM_PFN	PFN_DOWN(MAXMEM)
+ 
+ #ifdef CONFIG_BLK_DEV_INITRD
+-	tmp = (((unsigned long)&_end + PAGE_SIZE-1) & PAGE_MASK) - 8; 
+-	if (tmp < (unsigned long)&_end) 
+-		tmp += PAGE_SIZE;
+-	initrd_header = (unsigned long *)tmp;
+-	if (initrd_header[0] == 0x494E5244) {
+-		initrd_start = (unsigned long)&initrd_header[2];
+-		initrd_end = initrd_start + initrd_header[1];
++	parse_rd_cmdline(&initrd_start, &initrd_end);
++	if(initrd_start && initrd_end)
++		end = initrd_end;
++	else {
++		initrd_start = initrd_end = 0;
+ 	}
+-	start_pfn = PFN_UP(__pa((&_end)+(initrd_end - initrd_start) + PAGE_SIZE));
+-#else
++#endif /* CONFIG_BLK_DEV_INITRD */
+ 	/*
+ 	 * Partially used pages are not usable - thus
+ 	 * we are rounding upwards.
+ 	 */
+-	start_pfn = PFN_UP(__pa(&_end));
+-#endif	/* CONFIG_BLK_DEV_INITRD */
++	start_pfn = PFN_UP(__pa(end));
+ 
+ 	/* Find the highest page frame number we have available.  */
+ 	max_pfn = 0;

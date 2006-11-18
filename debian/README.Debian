@@ -1,0 +1,8 @@
+arcboot for Debian
+------------------
+
+You can check out arcboot's source from linux-mips.org's cvs archive:
+
+cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs login
+(password is "cvs")
+cvs -d :pserver:cvs@ftp.linux-mips.org:/home/cvs co arcboot

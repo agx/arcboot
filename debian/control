@@ -1,0 +1,27 @@
+Source: arcboot
+Section: admin
+Priority: optional
+Maintainer: Guido Guenther <agx@debian.org>
+Uploaders: Thiemo Seufer <ths@debian.org>
+Build-Depends: debhelper (>=4.1.16), e2fslibs-dev
+Standards-Version: 3.7.2
+
+Package: arcboot
+Architecture: mips
+Depends: dvhtool, ${misc:Depends}
+Description: Bootloader for SGI/MIPS IP22 and IP32 machines
+ arcboot is a bootloader for SGI/MIPS IP22 and IP32 machines like the Indy,
+ Indigo2 and O2. It is able to boot the Linux kernel from ext2 and ext3
+ filesystems. Support for other ARCS based subarchitectures can easily be
+ added. It is currently not capable of booting IRIX or to boot from iso9660
+ CDROMs though.
+
+Package: tip22
+Architecture: mips
+Depends: binutils | binutils-multiarch, file
+Description: Tftp boot image builder for SGI/MIPS IP22 and IP32 machines
+ tip22 is used to merge kernel and initrd into one bootable image. This
+ image also contains a small loader stub that copies the kernel to its
+ load address and appends the ramdisk. This is useful for booting via tftp or
+ from a CDROM. It is currently targeted for the IP22 and IP32 subarchitectures
+ but support for other ARCS based subarchitectures can easily be added.

@@ -1,0 +1,68 @@
+.TH "ARCBOOT" "8" "10 February 2002" "" ""
+.SH NAME
+arcboot \- bootloader for SGI/MIPS IP22 machines
+.SH SYNOPSIS
+
+\fB/usr/sbin/arcboot\fR <device>
+
+.SH "DESCRIPTION"
+.PP
+\fBarcboot\fR is the bootloader used on SGI/MIPS IP22 machines. It currently
+supports booting the kernel from an ext{2,3} filesystem and usually resides in
+the volume header of a disk with a SGI disklabel.
+.SH "USAGE"
+.PP
+<device> is the device name of the disk containing the volume header
+\fBarcboot\fR should go into. To use \fBarcboot\fR you have to  modify
+the following PROM variables:
+.P
+\fIsetenv OSLoader arcboot\fR
+.P
+\fIsetenv SystemPartition scsi(0)disk(X)rdisk(0)partition(8)\fR
+.P
+\fIsetenv OSLoadPartition scsi(0)disk(Y)rdisk(0)partition(Z)\fR
+.P
+\fIsetenv OSLoadFilename label_or_filename
+.P
+(where "X" is the scsi ID of the disk \fBarcboot\fR resides on and "Y" and "Z"
+are the scsi ID and partition number of the partition \fB/etc/arcboot.conf\fR
+resides on). Note that \fB/etc/arcboot.conf\fR and the directory your kernels
+are in (usually /boot/) have to be on the same partition.  On boot
+\fBarcboot\fR looks at the \fIOSLoadFilename\fR PROM variable and tries to find
+a label with the same name in \fB/etc/arcboot.conf\fR.
+
+.SH "Configuration File"
+An entry in \fB/etc/arcboot.conf\fR has the following format:
+.P
+label=<label>
+ image=<kernel>
+ append=<boot options>
+
+<label> is referenced by \fIOSLoadFilename\fR, <image> is the path to the
+kernel(again relative to \fIOSLoadPartition\fR) and <boot options> are the
+options appended to the kernel's command line.
+
+.SH "Example"
+label=linux
+ image=/boot/vmlinux-2.4.17
+ append="root=/dev/sda1 console=ttyS0"
+
+.SH "Notes"
+arcboot only loads ELF kernels. It doesn't handle ECOFF kernels to keep arcboot
+as small as possible and because ECOFF kernels on mips don't contain any symbol
+information which makes debugging more difficult.
+
+.SH "Files"
+.BR /etc/arcboot.conf
+\fBarcboot\fR's configuration file
+.P
+.BR /usr/share/doc/arcboot/README
+more details on howto setup arcboot
+.PP
+.SH "SEE ALSO"
+.PP
+dvhtool(1), elf2ecoff(8), tip22(8)
+.SH "AUTHORS"
+Arcboot is based on the arc bootloader for SGI Visual workstations written
+by Ralf Bächle <ralf@gnu.org>. Modifications for IP22 by Guido Günther
+<agx@sigxcpu.org>.

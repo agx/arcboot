@@ -1,0 +1,42 @@
+#!/bin/sh -e
+
+DVHTOOL=/usr/sbin/dvhtool
+ARCBOOT_IMG=/usr/lib/arcboot/arcboot.ip22
+ARCBOOT_CONF=/etc/arcboot.conf
+
+# Use the ip32 image if we're on an O2 
+if grep -E -qs '^system type[[:space:]]*: SGI (IP32|O2)' /proc/cpuinfo; then 
+	ARCBOOT_IMG=/usr/lib/arcboot/arcboot.ip32
+fi
+
+if [ ! -r $ARCBOOT_CONF ]; then
+	echo "No $ARCBOOT_CONF - giving up!"
+	exit 1
+fi
+
+if [ ! -x $DVHTOOL ]; then
+	echo "Can't find dvhtool - giving up!"
+	exit 1
+fi
+
+if [ -z "$1" ]; then
+	echo "Usage: arcboot <name_of_disk>"
+	exit 1
+fi
+
+echo -n "Putting `basename $ARCBOOT_IMG` into the volume header of $1..."
+$DVHTOOL -d $1 --unix-to-vh $ARCBOOT_IMG arcboot
+echo "done."
+
+# check if the "image=" lines in $ARCBOOT_IMG refer to valid ELF images
+for i in `grep "^[[:space:]]*image="  $ARCBOOT_CONF`; do
+ 	IMAGE=`echo $i | cut -d'=' -f2`;
+	if [ -L $IMAGE ]; then	# if it's a symlink, follow it
+		IMAGE=`dirname $IMAGE`/`readlink $IMAGE`
+	fi
+	if [ "$(dd if=$IMAGE bs=4 count=1 2>/dev/null)" != "$(printf '\177ELF')" ]; then
+		echo "Warning: $IMAGE is not an ELF image. Booting it will fail!"
+	fi
+done
+
+# TODO: better sanity checking of $ARCBOOT_CONF

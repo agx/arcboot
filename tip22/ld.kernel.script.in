@@ -1,0 +1,11 @@
+OUTPUT_FORMAT("@@OUTPUTFORMAT@@")
+OUTPUT_ARCH(mips)
+SECTIONS
+{
+  .data :
+  {
+        __kernel_start = .;
+        *(.data)
+        __kernel_end = .;
+  }
+}

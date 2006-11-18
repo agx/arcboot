@@ -1,0 +1,51 @@
+#! /bin/sh -e
+#
+# Merges kernel and ramdisk into one ECOFF bootimage
+
+SUBARCH=IP22
+
+LIBDIR=/usr/lib/tip22
+TIP22=$LIBDIR/tftpload.$SUBARCH.o
+ARCLIB=$LIBDIR/libarc.a
+LD_KERNEL=$LIBDIR/ld.kernel.script.$SUBARCH
+LD_RAMDISK=$LIBDIR/ld.ramdisk.script.$SUBARCH
+LD_SCRIPT=$LIBDIR/ld.script.$SUBARCH
+LDFLAGS="-N"
+LD=/usr/bin/ld
+MKTEMP=/bin/mktemp
+
+usage() {
+    echo "`basename $0` vmlinux initrd outfile"
+    exit 1
+}
+
+if [ "$#" != "3" ]; then
+	usage
+fi
+
+if ! file $2 | grep 'gzip compressed data' > /dev/null 2>&1; then
+	echo "$2 is no gzip compressed ramdisk".
+	usage
+fi
+
+if ! file $1 | grep 'ELF .* MIPS' > /dev/null 2>&1; then
+	echo "$1 is no ELF kernel".
+	usage
+fi
+
+if [ ! -x $MKTEMP ]; then
+	echo "Need mktemp."
+	exit 1
+fi
+
+if ! TMPDIR=`mktemp -d`; then
+	echo "mktemp failed."
+	exit 1
+fi
+
+echo -n "Merging kernel \"$1\" and ramdisk \"$2\" into bootimage \"$3\"..."
+${LD} -T $LD_KERNEL -b binary -o $TMPDIR/kernel.o $1
+${LD} -T $LD_RAMDISK -b binary -o $TMPDIR/ramdisk.o $2
+${LD} -T $LD_SCRIPT ${LDFLAGS} -o $3 ${TIP22} ${ARCLIB} $TMPDIR/kernel.o $TMPDIR/ramdisk.o
+rm -rf $TMPDIR
+echo "done."

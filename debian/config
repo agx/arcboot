@@ -1,0 +1,17 @@
+#!/bin/sh -e
+#$Id: config,v 1.1 2004/11/29 10:39:38 ladis Exp $
+
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+# Already seen?
+db_fget arcboot/boot_device seen
+if [ "$RET" = "false" ]; then
+    # what about devfs?
+    ROOTDEVICE=`mount | grep '[[:space:]]/[[:space:]]' | cut -d' ' -f 1`
+    BOOTDEVICE=`echo $ROOTDEVICE | sed 's/[12345678]*$//'`
+    db_set arcboot/boot_device $BOOTDEVICE
+fi
+
+db_input medium arcboot/boot_device || true
+db_go
