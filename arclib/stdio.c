@@ -106,6 +106,7 @@ int vfprintf(FILE * stream, const char *format, va_list ap)
 					format = str + 2;
 
 				switch (*format) {
+				case 'd':
 				case 'u':
 					uint = va_arg(ap, unsigned int);
 					str = numtostr(uint, 10);
