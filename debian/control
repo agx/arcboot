@@ -18,7 +18,7 @@ Description: Bootloader for SGI/MIPS IP22 and IP32 machines
 
 Package: tip22
 Architecture: mips
-Depends: binutils | binutils-multiarch, file
+Depends: binutils, file
 Description: Tftp boot image builder for SGI/MIPS IP22 and IP32 machines
  tip22 is used to merge kernel and initrd into one bootable image. This
  image also contains a small loader stub that copies the kernel to its
