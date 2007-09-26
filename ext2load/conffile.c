@@ -19,8 +19,9 @@
 
 #define _PARM_LIMIT	32
 
-static	char	*carray[_PARM_LIMIT+3]; /* 0 is the name, 
-					   1 the boofile, ...
+static	char	*carray[_PARM_LIMIT+4]; /* 0 is the name,
+					   1 an initrd,
+					   2 the bootfile,
 					   X is OSLoadOptions 
 					   X+1 ... _PARM_LIMIT are options given on the
 					   command line */
@@ -70,18 +71,20 @@ CHAR** GetConfig(char* config, char* name)
 				if (((strcmp(carray[0], name) == 0) && (strcmp(name, carray[0]) == 0))) {
 					return carray;
 				}
-			/* Reset image & append */
-			carray[1]=carray[2]=0;
+			/* Reset initrd & image & append */
+			carray[1]=carray[2]=carray[3]=0;
 			carray[0]=&start[6];
 		} else if (strncmp("image=",start,6) == 0) {
-			carray[1]=&start[6];
+			carray[2]=&start[6];
+		} else if (strncmp("initrd=",start,7) == 0) {
+			carray[1]=&start[7];
 		} else if (strncmp("append=",start,7) == 0) {
 			t=&start[7];
 			/* Does append start with " */
 			if (*t == '"') {
 				t++;
 				/* If so - append starts +1 */
-				carray[2]=t;
+				carray[3]=t;
 				/* Search ending quote */
 				while(*t != '"' && *t != 0x0)
 					t++;
@@ -89,9 +92,9 @@ CHAR** GetConfig(char* config, char* name)
 				if (*t == '"') 
 					*t=0x0;
 			} else 
-				carray[2]=&start[7];
-			t=carray[2];
-			i=3;
+				carray[3]=&start[7];
+			t=carray[3];
+			i=4;
 			while(i<_PARM_LIMIT && *t != 0x0) {
 				t++;
 					

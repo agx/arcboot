@@ -26,6 +26,11 @@
 #define ANSI_CLEAR	"\033[2J"
 #define CONF_FILE	"/etc/arcboot.conf"
 
+static char argv_rd_start[32];
+static char argv_rd_size[32];
+
+unsigned long max_page_size = 0;
+
 CHAR *OSLoadPartition = NULL;
 CHAR *OSLoadFilename = NULL;
 CHAR *OSLoadOptions = NULL;
@@ -191,6 +196,10 @@ int LoadProgramSegments32(ext2_file_t file, Elf_Ehdr * header, void *segments)
 	printf("Loading 32-bit executable\n\r");
 
 	for (idx = 0; idx < header->header32.e_phnum; idx++) {
+		if(max_page_size == 0) {
+                        max_page_size = segment->p_offset;
+                }
+
 		if (segment->p_type == PT_LOAD) {
 		    printf
 			("Loading program segment %u at 0x%x, offset=0x%x, size = 0x%x\n\r",
@@ -251,6 +260,10 @@ int LoadProgramSegments64(ext2_file_t file, Elf_Ehdr * header, void *segments)
 	printf("Loading 64-bit executable\n\r");
 
 	for (idx = 0; idx < header->header64.e_phnum; idx++) {
+		if(max_page_size == 0) {
+                        max_page_size = segment->p_offset;
+                }
+
 		if (segment->p_type == PT_LOAD) {
 		    printf ("Loading program segment %u at 0x%x, "
 			    "offset=0x%lx %lx, size = 0x%lx %lx\n\r",
@@ -303,7 +316,6 @@ int LoadProgramSegments64(ext2_file_t file, Elf_Ehdr * header, void *segments)
 
 void LoadProgramSegments(ext2_file_t file, Elf_Ehdr * header)
 {
-	int idx;
 	Boolean loaded = False;
 	void *segments;
 	size_t size;
@@ -452,6 +464,49 @@ Elf64_Addr LoadKernel(const char *partition, const char *filename)
 	return LoadKernelFile(file);
 }
 
+
+void LoadInitrd(const char *partition, const char *filename, int *argc, char **argv)
+{
+	ext2_file_t file;
+	UCHAR *initrd_addr;
+	ULONG initrd_sz;
+	int status;
+
+	if (!OpenFile(partition, filename, &file))
+		Fatal("Can't load initrd!\n\r");
+
+	initrd_sz = ext2fs_file_get_size(file);
+
+	initrd_addr = malloc(initrd_sz + max_page_size);
+
+	if (initrd_addr == NULL) {
+		Fatal("Cannot allocate memory for initrd\n\r");
+	}
+
+	initrd_addr = ((ULONG)initrd_addr + max_page_size) & ~(max_page_size - 1);
+
+	printf("Loading initrd at 0x%p, %u bytes...\n\r", initrd_addr, initrd_sz);
+
+	arc_do_progress = 1;
+	status = ext2fs_file_read(file,
+				  KSEG0ADDR((ULONG)initrd_addr),
+				  initrd_sz, NULL);
+	arc_do_progress = 0;
+	if (status != 0) {
+		print_ext2fs_error(status);
+		Fatal("Cannot read initrd\n\r");
+	}
+
+	/* Add rd_start=, rd_size= */
+	sprintf(argv_rd_start, "rd_start=0x%x", initrd_addr);
+	sprintf(argv_rd_size, "rd_size=0x%x", initrd_sz);
+	argv[*argc]=argv_rd_start;
+	(*argc)++;
+	argv[*argc]=argv_rd_size;
+	(*argc)++;
+}
+
+
 void printCmdLine(int argc, CHAR *argv[])
 {
  int i;
@@ -520,8 +575,8 @@ void _start(LONG argc, CHAR *argv[], CHAR *envp[])
 		nargv = argv;
 	} else {
 		int i;
-		OSLoadFilename = params[1];
-		nargv = &params[1]; 		/* nargv[0] is the labels name */
+		OSLoadFilename = params[2];
+		nargv = &params[2]; 		/* nargv[0] is the labels name */
 		for( nargc=0; nargv[nargc]; nargc++);	/* count nargv argumnts */
 		if(OSLoadOptions != NULL) {	/* append OSLoadOptions if present */
 			nargv[nargc] = OSLoadOptions;
@@ -536,8 +591,19 @@ void _start(LONG argc, CHAR *argv[], CHAR *envp[])
 	printf("Loading %s from %s\n\r",(params) ? params[0] : OSLoadFilename, OSLoadPartition);
 	kernel_entry64 = LoadKernel(OSLoadPartition, OSLoadFilename);
 	kernel_entry32 = (Elf32_Addr) kernel_entry64;
+
 #if DEBUG
 	printf("Command line after config file: \n\r");
+	printCmdLine(nargc, nargv);
+#endif
+
+	if (params[1]) {
+	  printf("Loading initrd %s from %s\n\r", params[1], OSLoadPartition);
+	  LoadInitrd(OSLoadPartition, params[1], &nargc, nargv);
+	}
+
+#if DEBUG
+	printf("Command line after initrd: \n\r");
 	printCmdLine(nargc, nargv);
 	printf("Kernel entry: 0x%lx %lx\n\r",
 		(long)(kernel_entry64>>32),(long)(kernel_entry64&0xffffffff));
