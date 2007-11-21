@@ -1,3 +1,22 @@
+arcboot (0.3.8.9) experimental; urgency=low
+
+  * extload: LoadProgramSegments64: add casts to unsigned long so the address
+    and size for .bss is calculated and printed correctly
+  * same for tip22
+  * ext2io.c: fix some warnings
+  * disable strict aliasing until ext2io.c is cleaned up
+  * printf: handle %d as %u
+  * add arcboot initrd support by Julien Blache - Thanks!
+  * make initrd_addr an unsigned long to avoid unnecessary casts
+
+  * acknowledge NMU (Thanks Julien)
+  * add Vcs-Git field
+  * debhelper version 5
+  * improved wording of the debconf template (Closes: #378100)
+  * no need to depend on binutils-multiarch
+
+ -- Guido Guenther <agx@sigxcpu.org>  Wed, 21 Nov 2007 16:39:21 +0100
+
 arcboot (0.3.8.8) unstable; urgency=low
 
   * Non-Maintainer Upload, with maintainer consent.
