@@ -183,7 +183,7 @@ static ULONG CopyProgramSegments64(Elf64_Ehdr * header)
 	int idx;
 	Boolean loaded = False;
 	Elf64_Phdr *segment, *segments;
-	size_t size = header->e_phentsize * header->e_phnum;
+	ULONG size = header->e_phentsize * header->e_phnum;
 	ULONG kernel_end=0L;
 
 	if (size <= 0)
@@ -198,8 +198,12 @@ static ULONG CopyProgramSegments64(Elf64_Ehdr * header)
 	segment = segments;
 	for (idx = 0; idx < header->e_phnum; idx++) {
 		if (segment->p_type == PT_LOAD) {
-			printf("Loading program segment %u at 0x%x, size = 0x%llx\n\r",
-			       idx + 1, KSEG0ADDR(segment->p_vaddr), segment->p_filesz);
+			printf ("Loading program segment %u at 0x%x, "
+				"size = 0x%lx %lx\n\r",
+				idx + 1,
+				(int)KSEG0ADDR(segment->p_vaddr),
+				(long)(segment->p_filesz>>32),
+				(long)(segment->p_filesz&0xffffffff));
 
 			memcpy((void *)(long)(segment->p_vaddr), offset2addr(segment->p_offset), segment->p_filesz);
 			/* determine the highest address used by the kernel's memory image */
@@ -207,15 +211,15 @@ static ULONG CopyProgramSegments64(Elf64_Ehdr * header)
 				kernel_end = segment->p_vaddr + segment->p_memsz;
 			}
 
-			size = segment->p_memsz - segment->p_filesz;
+		        size = (ULONG)segment->p_memsz - (ULONG)segment->p_filesz;
 			if (size > 0) {
 				printf
-				    ("Zeroing memory at 0x%x, size = 0x%x\n\r",
-				     (KSEG0ADDR(segment->p_vaddr +
-				      segment->p_filesz)), size);
+				    ("Zeroing memory at 0x%lx, size = 0x%lx\n\r",
+				    (KSEG0ADDR((ULONG)segment->p_vaddr +
+				    (ULONG)segment->p_filesz)), size);
 				memset((void *)
-				       (KSEG0ADDR(segment->
-					 p_vaddr + segment->p_filesz)), 0, size);
+				   (KSEG0ADDR((ULONG)segment->p_vaddr + 
+				    (ULONG)segment->p_filesz)), 0, size);
 			}
 			loaded = True;
 		}
