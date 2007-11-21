@@ -111,12 +111,11 @@ struct arc_private_data {
 static void arc_progress(struct arc_private_data *, unsigned long);
 
 static errcode_t alloc_cache(io_channel, struct arc_private_data *);
-static void free_cache(io_channel, struct arc_private_data *);
-static void reset_one_cache(io_channel, struct arc_private_data *,
-    struct arc_cache *, int);
+static void free_cache(struct arc_private_data *);
+static void reset_one_cache(io_channel, struct arc_cache *, int);
 static void reset_sg_cache(io_channel, struct arc_private_data *, int);
-static struct arc_cache *find_cached_block(io_channel,
-    struct arc_private_data *, unsigned long);
+static struct arc_cache *find_cached_block( struct arc_private_data *, 
+    unsigned long);
 static int alloc_sg_blocks(io_channel, struct arc_private_data *,
     unsigned long, int);
 static errcode_t fill_sg_blocks(io_channel, struct arc_private_data *, int);
@@ -193,7 +192,7 @@ alloc_cache(io_channel channel, struct arc_private_data *priv)
  * Frees all memory associated with a single file's cache.
  */
 static void
-free_cache(io_channel channel, struct arc_private_data *priv)
+free_cache(struct arc_private_data *priv)
 {
 	struct arc_cache	*cache;
 	int			i;
@@ -214,8 +213,7 @@ free_cache(io_channel channel, struct arc_private_data *priv)
  * also be invalidated.
  */
 static void
-reset_one_cache(io_channel channel, struct arc_private_data *priv,
-    struct arc_cache *cache, int discard)
+reset_one_cache(io_channel channel, struct arc_cache *cache, int discard)
 {
 	if (CACHE_IS_SG(cache) && discard == 0 && cache->in_use != 0)
 		memcpy(cache->alloc_buf, cache->buf, channel->block_size);
@@ -247,7 +245,7 @@ reset_sg_cache(io_channel channel, struct arc_private_data *priv,
 					break;
 				}
 			}
-			reset_one_cache(channel, priv, cache, discard);
+			reset_one_cache(channel, cache, discard);
 		}
 	}
 }
@@ -300,15 +298,14 @@ raw_read_blk(io_channel channel, struct arc_private_data *priv,
 }
 
 /*
- * For the file associated with channel and priv, find block in the cache.
+ * For the file associated with priv, find block in the cache.
  * In the case of a miss, return NULL.  The last access "time" will be
  * updated to refresh the LRU.  Note that this is much different from the
  * unix_io.c version of the same function; because our allocation step is
  * far more complex to cover readahead, it is dealt with in alloc_sg_blocks.
  */
 static struct arc_cache *
-find_cached_block(io_channel channel, struct arc_private_data *priv,
-    unsigned long block)
+find_cached_block(struct arc_private_data *priv, unsigned long block)
 {
 	struct arc_cache	*cache;
 	int			i;
@@ -360,7 +357,7 @@ alloc_sg_blocks(io_channel channel, struct arc_private_data *priv,
 	/* If we don't have enough blocks yet, evict the LRUs. */
 	if (unused_count < count) {
 		for (age_mark = oldest_cache->last_use;
-		    unused_count < count && age_mark <= virtual_time;
+		    unused_count < count && (unsigned long)age_mark <= virtual_time;
 		    age_mark++) {
 			for (i = 0, cache = priv->cache;
 			    i < CACHE_SIZE && unused_count < count;
@@ -438,7 +435,7 @@ cache_invalidate(io_channel channel, struct arc_private_data *priv)
 	int			i;
 
 	for (i = 0, cache = priv->cache; i < CACHE_SIZE; i++, cache++)
-		reset_one_cache(channel, priv, cache, 1);
+		reset_one_cache(channel, cache, 1);
 }
 
 static errcode_t
@@ -521,7 +518,7 @@ static errcode_t arc_close(io_channel channel)
 
 	if (--channel->refcount == 0) {
 		status = ArcClose(priv->fileID);
-		free_cache(channel, priv);
+		free_cache(priv);
 		if (channel->name != NULL)
 			ext2fs_free_mem((void **) &channel->name);
 		if (channel->private_data != NULL)
@@ -544,7 +541,7 @@ static errcode_t arc_set_blksize(io_channel channel, int blksize)
 
 	if (channel->block_size != blksize) {
 		channel->block_size = blksize;
-		free_cache(channel, priv);
+		free_cache(priv);
 		if ((status = alloc_cache(channel, priv)) != 0)
 			return (status);
 	}
@@ -608,7 +605,7 @@ arc_read_blk(io_channel channel, unsigned long block, int count, void *buf)
 		status = raw_read_blk(channel, priv, block, count, cbuf);
 
 	while (count > 0) {
-		if ((cache = find_cached_block(channel, priv, block)) == NULL)
+		if ((cache = find_cached_block(priv, block)) == NULL)
 			break;
 #ifdef DEBUG
 		printf("Cache hit on block %lu\n\r", block);
@@ -731,13 +728,11 @@ time_t time(time_t *t)
 unsigned long long __udivdi3(unsigned long long numerator,
 			     unsigned long long denominator)
 {
-//	printf("ARGH! %s\n", __FUNCTION__);
 	return ((unsigned int)(numerator)) / ((unsigned int)(denominator));
 }
 
 unsigned long long __umoddi3(unsigned long long val, unsigned long long mod)
 {
-//	printf("ARGH! %s\n", __FUNCTION__);
 	return ((unsigned int)(val)) % ((unsigned int)(mod));
 }
 
