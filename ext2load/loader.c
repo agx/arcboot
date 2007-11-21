@@ -245,7 +245,7 @@ int LoadProgramSegments64(ext2_file_t file, Elf_Ehdr * header, void *segments)
 	int loaded = 0;
  	Elf64_Phdr* segment=(Elf64_Phdr*)segments;
 	errcode_t status;
-	size_t size;
+	unsigned long size;
 
 	is64=1;
 	printf("Loading 64-bit executable\n\r");
@@ -271,7 +271,7 @@ int LoadProgramSegments64(ext2_file_t file, Elf_Ehdr * header, void *segments)
 
 		    arc_do_progress = 1;
 		    status = ext2fs_file_read(file,
-					  (void *) (KSEG0ADDR(
+					  (void *) (KSEG0ADDR((ULONG)
 					            segment->p_vaddr)),
 					  segment->p_filesz, NULL);
 		    arc_do_progress = 0;
@@ -280,15 +280,15 @@ int LoadProgramSegments64(ext2_file_t file, Elf_Ehdr * header, void *segments)
 			Fatal("Cannot read program segment\n\r");
 		    }
 
-		    size = segment->p_memsz - segment->p_filesz;
+		    size = (ULONG)segment->p_memsz - (ULONG)segment->p_filesz;
 		    if (size > 0) {
 			    printf
 				("Zeroing memory at 0x%lx, size = 0x%lx\n\r",
-			        (KSEG0ADDR(segment->p_vaddr +
-			        segment->p_filesz)), size);
+			        (KSEG0ADDR((ULONG)segment->p_vaddr +
+			        (ULONG)segment->p_filesz)), size);
 			    memset((void *)
-			       (KSEG0ADDR(segment->
-				 p_vaddr + segment->p_filesz)), 0, size);
+			       (KSEG0ADDR((ULONG)segment->p_vaddr + 
+			        (ULONG)segment->p_filesz)), 0, size);
 		    }
 
 		    loaded = 1;
