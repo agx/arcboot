@@ -1,7 +1,7 @@
 Source: arcboot
 Section: admin
 Priority: optional
-Maintainer: Guido Guenther <agx@debian.org>
+Maintainer: Guido Guenther <agx@sigxcpu.org>
 Uploaders: Thiemo Seufer <ths@debian.org>
 Build-Depends: debhelper (>=4.1.16), e2fslibs-dev
 Vcs-Git: http://honk.sigxcpu.org/git/arcboot.git/
