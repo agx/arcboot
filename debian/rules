@@ -76,7 +76,6 @@ binary-arch: build install
 	dh_installdebconf
 	dh_installdocs
 	dh_installexamples etc/arcboot.conf -parcboot
-	dh_installexamples tip22/kernel/ -ptip22
 	dh_installmenu
 #	dh_installlogrotate
 #	dh_installemacsen
