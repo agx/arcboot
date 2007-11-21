@@ -21,7 +21,7 @@ TARGETS = ext2load
 
 CFLAGS = -O2 -I$(COMMONDIR) -I$(ARCINCLUDEDIR) -I$(E2FSINCLUDEDIR) 	\
          -W -Wall -mno-abicalls -G 0 -fno-pic				\
-	 -DSUBARCH=${SUBARCH}
+	 -DSUBARCH=${SUBARCH} -fno-strict-aliasing
 
 # uncomment for debugging
 #CFLAGS+=-DDEBUG
