@@ -468,8 +468,7 @@ Elf64_Addr LoadKernel(const char *partition, const char *filename)
 void LoadInitrd(const char *partition, const char *filename, int *argc, char **argv)
 {
 	ext2_file_t file;
-	UCHAR *initrd_addr;
-	ULONG initrd_sz;
+	ULONG initrd_addr, initrd_sz;
 	int status;
 
 	if (!OpenFile(partition, filename, &file))
@@ -477,19 +476,18 @@ void LoadInitrd(const char *partition, const char *filename, int *argc, char **a
 
 	initrd_sz = ext2fs_file_get_size(file);
 
-	initrd_addr = malloc(initrd_sz + max_page_size);
+	initrd_addr = (ULONG)malloc(initrd_sz + max_page_size);
 
-	if (initrd_addr == NULL) {
+	if (initrd_addr == 0) {
 		Fatal("Cannot allocate memory for initrd\n\r");
 	}
 
-	initrd_addr = ((ULONG)initrd_addr + max_page_size) & ~(max_page_size - 1);
+	initrd_addr = (initrd_addr + max_page_size) & ~(max_page_size - 1);
 
-	printf("Loading initrd at 0x%p, %u bytes...\n\r", initrd_addr, initrd_sz);
+	printf("Loading initrd at 0x%lx, %lu bytes...\n\r", initrd_addr, initrd_sz);
 
 	arc_do_progress = 1;
-	status = ext2fs_file_read(file,
-				  KSEG0ADDR((ULONG)initrd_addr),
+	status = ext2fs_file_read(file, (void*) initrd_addr,
 				  initrd_sz, NULL);
 	arc_do_progress = 0;
 	if (status != 0) {
@@ -498,8 +496,8 @@ void LoadInitrd(const char *partition, const char *filename, int *argc, char **a
 	}
 
 	/* Add rd_start=, rd_size= */
-	sprintf(argv_rd_start, "rd_start=0x%x", initrd_addr);
-	sprintf(argv_rd_size, "rd_size=0x%x", initrd_sz);
+	sprintf(argv_rd_start, "rd_start=0x%lx", initrd_addr);
+	sprintf(argv_rd_size, "rd_size=0x%lx", initrd_sz);
 	argv[*argc]=argv_rd_start;
 	(*argc)++;
 	argv[*argc]=argv_rd_size;
