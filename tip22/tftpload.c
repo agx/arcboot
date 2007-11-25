@@ -257,7 +257,7 @@ static ULONG CopyKernel(ULONG* kernel_end)
 
 		(*kernel_end) = CopyProgramSegments32(header);
 
-		printf("Starting kernel; entry point = 0x%lx\n\r",
+		printf("Kernel entry point is 0x%lx\n\r",
 		       ((ULONG) KSEG0ADDR(header->e_entry)));
 		return KSEG0ADDR(header->e_entry);
 	} else if (header->e_ident[EI_CLASS] == ELFCLASS64) {
@@ -274,8 +274,8 @@ static ULONG CopyKernel(ULONG* kernel_end)
 
 		(*kernel_end) = CopyProgramSegments64(header64);
 
-		printf("Starting kernel; entry point = 0x%lx\n\r",
-		       ((ULONG) KSEG0ADDR(header64->e_entry)));
+		printf("Kernel entry point is 0x%lx\n\r",
+		       ((ULONG)KSEG0ADDR(header64->e_entry)));
 		return KSEG0ADDR(header64->e_entry);
 	} else
 		Fatal("Neither an ELF32 nor an ELF64 kernel\n\r");
@@ -285,9 +285,10 @@ static ULONG CopyKernel(ULONG* kernel_end)
 
 static void copyRamdisk(void* rd_vaddr, void* rd_start, ULONG rd_size)
 {
-	memcpy(rd_vaddr, rd_start, rd_size);
-	printf("Copied initrd from 0x%p to 0x%p (0x%lx bytes)\n\r", 
+	printf("Copying initrd from 0x%p to 0x%p (0x%lx bytes)...\n\r", 
 			rd_start, rd_vaddr, rd_size);
+	memcpy(rd_vaddr, rd_start, rd_size);
+	printf("Initrd copied.\n\r");
 }
 
 void _start(LONG argc, CHAR * argv[], CHAR * envp[])
@@ -309,7 +310,7 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 
 	InitMalloc();
 
-	/* copy the kernel to its load address */
+	/* copy kernel and ramdisk to its load addresses */
 #ifdef DEBUG
 	printf("Embedded kernel image starts 0x%p, ends 0x%p\n\r", 
 			&__kernel_start, &__kernel_end);
@@ -344,6 +345,7 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 	Wait("\n\r--- Debug: press <spacebar> to boot kernel ---");
 #endif
 	/* Finally jump into the kernel */
+	printf("Starting kernel...\n\r");
 	ArcFlushAllCaches();
 	if( kernel_entry )
 		(*kernel_entry)(nargc ,nargv, envp);
