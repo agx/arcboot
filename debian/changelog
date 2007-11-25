@@ -1,3 +1,14 @@
+arcboot (0.3.9) unstable; urgency=low
+
+  * tftpload.c: fix misleading printouts
+  * remove unneeded e2fslib
+  * remove kernel patches to parse the command line, merged since 2.6.9
+  * add initrd example
+
+  * debian/rules: remove unneeded debhelper commands to speedup the build
+
+ -- Guido Guenther <agx@sigxcpu.org>  Sun, 25 Nov 2007 17:10:12 +0100
+
 arcboot (0.3.8.9) experimental; urgency=low
 
   * extload: LoadProgramSegments64: add casts to unsigned long so the address
