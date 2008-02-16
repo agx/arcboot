@@ -30,7 +30,7 @@ struct kernel_load_block {
 struct kernel_load_block kernel_load[] = {
 	{ /* IP22 */
 	.base =     0x88002000,
-	.reserved =   0x800000,
+	.reserved =  0x1700000,
 	},
 	{ /* IP32 */
 	.base     = 0x80004000,

@@ -320,7 +320,12 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 	kernel_entry = (void (*)(int, CHAR *[], CHAR *[]))CopyKernel(&kernel_end);
 
 	/* align to page boundary */
+#if (SUBARCH != IP22)
 	rd_vaddr = (char*)(((kernel_end + PAGE_SIZE) / PAGE_SIZE ) * PAGE_SIZE);
+#else
+	rd_vaddr = (char*)0x88800000;
+#endif
+
 	copyRamdisk( rd_vaddr, (char*)&__rd_start, rd_size);
 
 	/* tell the kernel about the ramdisk */
