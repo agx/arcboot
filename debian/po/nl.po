@@ -14,7 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: arcboot 0.3.8.1\n"
-"POT-Creation-Date: 2003-08-05 09:42+0200\n"
+"Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
+"POT-Creation-Date: 2008-01-24 14:06+0000\n"
 "PO-Revision-Date: 2004-04-16 11:04+0100\n"
 "Last-Translator: Luk Claes <luk.claes@ugent.be>\n"
 "Language-Team: Debian l10n Dutch <debian-l10n-dutch@lists.debian.org>\n"
@@ -22,13 +23,23 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Type: string
 #. Description
-#: ../templates:4
-msgid "Where to put arcboot?"
-msgstr "Waar moet arcboot geplaatst worden?"
+#: ../templates:1001
+msgid "Location of arcboot:"
+msgstr ""
 
+#. Type: string
 #. Description
-#: ../templates:4
-msgid "Arcboot must be put into the volume header of a disk with a SGI disklabel. Usually the volume header of /dev/sda is used. Please give the device name of the disk you want to put arcboot onto."
-msgstr "Arcboot moet geplaatst worden in een volumehoofding van een schijf met een SGI-schijflabel. Gewoonlijk wordt de volumehoofding van /dev/sda gebruikt. Geef de toestelnaam van de schijf waar u arcboot wilt op plaatsen."
+#: ../templates:1001
+msgid ""
+"Arcboot must be put into the volume header of a disk with a SGI disklabel. "
+"Usually the volume header of /dev/sda is used. Please give the device name "
+"of the disk you want to put arcboot onto."
+msgstr ""
+"Arcboot moet geplaatst worden in een volumehoofding van een schijf met een "
+"SGI-schijflabel. Gewoonlijk wordt de volumehoofding van /dev/sda gebruikt. "
+"Geef de toestelnaam van de schijf waar u arcboot wilt op plaatsen."
 
+#~ msgid "Where to put arcboot?"
+#~ msgstr "Waar moet arcboot geplaatst worden?"

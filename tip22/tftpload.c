@@ -30,6 +30,8 @@ extern void* __kernel_end;
 extern void* __rd_start;
 extern void* __rd_end;
 
+static int is64 = 0;
+
 static void Wait(const char *prompt)
 {
 	int ch;
@@ -235,7 +237,7 @@ static ULONG CopyProgramSegments64(Elf64_Ehdr * header)
 	return kernel_end;
 }
 
-static ULONG CopyKernel(ULONG* kernel_end)
+static Elf64_Addr CopyKernel(ULONG *kernel_end)
 {
 	Elf32_Ehdr *header = (Elf32_Ehdr*)offset2addr(0L);
 	Elf64_Ehdr *header64 = (Elf64_Ehdr*)header;
@@ -257,10 +259,11 @@ static ULONG CopyKernel(ULONG* kernel_end)
 
 		(*kernel_end) = CopyProgramSegments32(header);
 
-		printf("Kernel entry point is 0x%lx\n\r",
-		       ((ULONG) KSEG0ADDR(header->e_entry)));
-		return KSEG0ADDR(header->e_entry);
+		printf("ELF32 kernel entry point = 0x%lx\n\r", (ULONG)header->e_entry);
+		return (Elf64_Addr) header->e_entry;
 	} else if (header->e_ident[EI_CLASS] == ELFCLASS64) {
+		is64 = 1;
+
 		if (header64->e_ident[EI_DATA] != ELFDATA2MSB)
 			Fatal("Not a big-endian file\n\r");
 		if (header64->e_ident[EI_VERSION] != EV_CURRENT)
@@ -274,9 +277,9 @@ static ULONG CopyKernel(ULONG* kernel_end)
 
 		(*kernel_end) = CopyProgramSegments64(header64);
 
-		printf("Kernel entry point is 0x%lx\n\r",
-		       ((ULONG)KSEG0ADDR(header64->e_entry)));
-		return KSEG0ADDR(header64->e_entry);
+		printf("ELF64 kernel entry point = 0x%lx %lx\n\r",
+		       (ULONG)(header64->e_entry >> 32), (ULONG)(header64->e_entry & 0xffffffff));
+		return header64->e_entry;
 	} else
 		Fatal("Neither an ELF32 nor an ELF64 kernel\n\r");
 
@@ -291,6 +294,20 @@ static void copyRamdisk(void* rd_vaddr, void* rd_start, ULONG rd_size)
 	printf("Initrd copied.\n\r");
 }
 
+void _start64(LONG argc, CHAR * argv[], CHAR * envp[],
+              unsigned long long *addr)
+{
+  __asm__ __volatile__(
+		       ".set push\n"
+		       "\t.set mips3\n"
+		       "\t.set noreorder\n"
+		       "\t.set noat\n"
+		       "\tld $1, 0($7)\n"
+		       "\tjr $1\n"
+		       "\t nop\n"
+		       "\t.set pop");
+}
+
 void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 {
 	char* nargv[3];
@@ -298,8 +315,9 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 	char argv_rd[128];	/* passed to the kernel on its commandline */
 	ULONG kernel_end = 0L;
 	ULONG rd_size= ((char*)&__rd_end) - ((char*)&__rd_start);
-	char* rd_vaddr=NULL;
-	void (*kernel_entry)(int argc, CHAR * argv[], CHAR * envp[]);
+	ULONG rd_vaddr;
+	Elf32_Addr kernel_entry32;
+	Elf64_Addr kernel_entry64;
 
 	/* Print identification */
 #if (SUBARCH == IP22)
@@ -317,14 +335,21 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 	printf("Embedded ramdisk image starts 0x%p, ends 0x%p\n\r", 
 			&__rd_start, &__rd_end);
 #endif
-	kernel_entry = (void (*)(int, CHAR *[], CHAR *[]))CopyKernel(&kernel_end);
+	kernel_entry64 = CopyKernel(&kernel_end);
+	kernel_entry32 = (Elf32_Addr) kernel_entry64;
 
+	rd_vaddr = (ULONG)malloc(rd_size + PAGE_SIZE);
 	/* align to page boundary */
-	rd_vaddr = (char*)(((kernel_end + PAGE_SIZE) / PAGE_SIZE ) * PAGE_SIZE);
-	copyRamdisk( rd_vaddr, (char*)&__rd_start, rd_size);
+	rd_vaddr = (rd_vaddr + PAGE_SIZE) & ~(PAGE_SIZE - 1);
+
+#ifdef DEBUG
+	printf("rd_start=0x%lx rd_size=0x%lx\n\r", rd_vaddr, rd_size);
+#endif
+
+	copyRamdisk( (char *)rd_vaddr, (char*)&__rd_start, rd_size);
 
 	/* tell the kernel about the ramdisk */
-	sprintf(argv_rd, "rd_start=0x%p rd_size=0x%lx", rd_vaddr, rd_size);
+	sprintf(argv_rd, "rd_start=0x%lx rd_size=0x%lx", rd_vaddr, rd_size);
 
 	nargv[0] = argv[0];
 	nargv[1] = argv_rd;
@@ -333,6 +358,7 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 		if( !memcmp(argv[i],"append=",7) )
 			break;
 	}
+
 	if( i < argc ) { /* we're asked to pass s.th. to the kernel */
 		nargv[2] = argv[i]+7;
 		nargc++;
@@ -345,11 +371,17 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 	Wait("\n\r--- Debug: press <spacebar> to boot kernel ---");
 #endif
 	/* Finally jump into the kernel */
-	printf("Starting kernel...\n\r");
-	ArcFlushAllCaches();
-	if( kernel_entry )
-		(*kernel_entry)(nargc ,nargv, envp);
-	else
+	if( kernel_entry64 ) {
+		if (is64 == 0) {
+			printf("Starting ELF32 kernel\n\r");
+			ArcFlushAllCaches();
+			((void (*)(int argc, CHAR * argv[], CHAR * envp[]))kernel_entry32)(nargc ,nargv, envp);
+		} else {
+			printf("Starting ELF64 kernel\n\r");
+			ArcFlushAllCaches();
+			_start64(nargc, nargv, envp, &kernel_entry64);
+		}
+	} else
 		printf("Invalid kernel entry NULL\n\r");
 
 	/* Not likely to get back here in a functional state, 

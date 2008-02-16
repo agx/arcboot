@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: arcboot 0.3.8.6\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-05 09:42+0200\n"
+"Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
+"POT-Creation-Date: 2008-01-24 14:06+0000\n"
 "PO-Revision-Date: 2005-06-12 11:33+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -15,15 +15,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
+#. Type: string
 #. Description
-#: ../templates:4
-msgid "Where to put arcboot?"
-msgstr "Bạn có muốn để trình arcboot vào chỗ nào?"
+#: ../templates:1001
+msgid "Location of arcboot:"
+msgstr ""
 
+#. Type: string
 #. Description
-#: ../templates:4
+#: ../templates:1001
 msgid ""
 "Arcboot must be put into the volume header of a disk with a SGI disklabel. "
 "Usually the volume header of /dev/sda is used. Please give the device name "
 "of the disk you want to put arcboot onto."
-msgstr "Phải để trình arcboot vào phần đầu khối tin của một đĩa có nhãn đĩa SGI. Thường dùng phần đầu khối tin của «/dev/sda». Hãy nhập tên thiết bị của đĩa nơi bạn muốn để trình arcboot."
+msgstr ""
+"Phải để trình arcboot vào phần đầu khối tin của một đĩa có nhãn đĩa SGI. "
+"Thường dùng phần đầu khối tin của «/dev/sda». Hãy nhập tên thiết bị của đĩa "
+"nơi bạn muốn để trình arcboot."
+
+#~ msgid "Where to put arcboot?"
+#~ msgstr "Bạn có muốn để trình arcboot vào chỗ nào?"

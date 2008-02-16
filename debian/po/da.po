@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: arcboot 0.3.8.4\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-05 09:42+0200\n"
+"Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
+"POT-Creation-Date: 2008-01-24 14:06+0000\n"
 "PO-Revision-Date: 2004-10-15 18:02+0200\n"
 "Last-Translator: Morten Brix Pedersen <morten@wtf.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -23,13 +23,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Type: string
 #. Description
-#: ../templates:4
-msgid "Where to put arcboot?"
-msgstr "Hvor skal arcboot placeres?"
+#: ../templates:1001
+msgid "Location of arcboot:"
+msgstr ""
 
+#. Type: string
 #. Description
-#: ../templates:4
+#: ../templates:1001
 msgid ""
 "Arcboot must be put into the volume header of a disk with a SGI disklabel. "
 "Usually the volume header of /dev/sda is used. Please give the device name "
@@ -38,3 +40,6 @@ msgstr ""
 "Arcoot skal placeres i 'volume' hovedet af en disk med et SGI-diskmærke. "
 "Normalt er 'volume' hovedet på /dev/sda brugt. Angiv enhedsnavnet på den "
 "disk du gerne vil placere arcboot på."
+
+#~ msgid "Where to put arcboot?"
+#~ msgstr "Hvor skal arcboot placeres?"

@@ -1,3 +1,4 @@
 usr/lib/arcboot
 usr/sbin
 etc/
+usr/share/lintian/overrides

@@ -45,8 +45,8 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	-$(MAKE) clean
-	-rm -f arcboot.ip22 arcboot.ip32
+	$(MAKE) clean
+	rm -f arcboot.ip22 arcboot.ip32
 
 	dh_clean
 
@@ -64,6 +64,9 @@ install: build
 	# install tip22 into debian/tip22
 	$(MAKE) PREFIX=${PREFIX_TIP22} BINDIR=${BIN_TIP22} LIBDIR=${LIB_TIP22} -C arclib install
 	$(MAKE) PREFIX=${PREFIX_TIP22} BINDIR=${BIN_TIP22} LIBDIR=${LIB_TIP22} -C tip22 install
+
+        # Install lintian overrides
+	cp debian/arcboot.lintian-overrides $(CURDIR)/debian/arcboot/usr/share/lintian/overrides/arcboot
 
 # Build architecture-independent files here.
 binary-indep: build install

@@ -15,8 +15,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: arcboot 0.3.7\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-05 09:42+0200\n"
+"Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
+"POT-Creation-Date: 2008-01-24 14:06+0000\n"
 "PO-Revision-Date: 2004-01-12 22:02+0900\n"
 "Last-Translator: Hideki Yamane <henrich@samba.gr.jp>\n"
 "Language-Team: Japanese <debian-japanese@lists.debian.org>\n"
@@ -24,17 +24,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Type: string
 #. Description
-#: ../templates:4
-msgid "Where to put arcboot?"
-msgstr "¤É¤³¤Ë arcboot ¤ò½ñ¤­¹þ¤ß¤Þ¤¹¤«?"
+#: ../templates:1001
+msgid "Location of arcboot:"
+msgstr ""
 
+#. Type: string
 #. Description
-#: ../templates:4
+#: ../templates:1001
 msgid ""
 "Arcboot must be put into the volume header of a disk with a SGI disklabel. "
 "Usually the volume header of /dev/sda is used. Please give the device name "
 "of the disk you want to put arcboot onto."
-msgstr "arcboot ¤Ï SGI ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤ò»ý¤Ã¤Æ¤¤¤ë¥Ç¥£¥¹¥¯¤Î¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¤Ë½ñ¤­¹þ¤Þ¤Í¤Ð¤Ê¤ê¤Þ¤»¤ó¡£"
-"ÄÌ¾ï¡¢/dev/sda ¤Î¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¤¬»ÈÍÑ¤µ¤ì¤Þ¤¹¡£arcboot ¤òÇÛÃÖ¤·¤¿¤¤¥Ç¥Ð¥¤¥¹Ì¾¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr ""
+"arcboot ¤Ï SGI ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤ò»ý¤Ã¤Æ¤¤¤ë¥Ç¥£¥¹¥¯¤Î¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¤Ë½ñ¤­¹þ¤Þ"
+"¤Í¤Ð¤Ê¤ê¤Þ¤»¤ó¡£ÄÌ¾ï¡¢/dev/sda ¤Î¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¤¬»ÈÍÑ¤µ¤ì¤Þ¤¹¡£arcboot "
+"¤òÇÛÃÖ¤·¤¿¤¤¥Ç¥Ð¥¤¥¹Ì¾¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£"
 
+#~ msgid "Where to put arcboot?"
+#~ msgstr "¤É¤³¤Ë arcboot ¤ò½ñ¤­¹þ¤ß¤Þ¤¹¤«?"

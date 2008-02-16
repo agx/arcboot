@@ -1,0 +1,3 @@
+arcboot: unstripped-binary-or-object ./usr/lib/arcboot/arcboot.ip32
+arcboot: statically-linked-binary ./usr/lib/arcboot/arcboot.ip32
+
