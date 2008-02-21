@@ -4,7 +4,7 @@ arcboot (0.3.10) unstable; urgency=low
   * Revert the tftpload fix from 0.3.9.1 since it causes the the kernel
     to OOM
   * apply an IP22 tftploader hack so the kernel + di-initrd fit into the
-    reserved space (Closes: #452933) - will need to be cleaned up
+    reserved space (Closes: #452798) - will need to be cleaned up
   * Update German translation (Closes: #462681)
   * Update Japanese translation (Closes: #463325)
 
