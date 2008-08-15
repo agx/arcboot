@@ -1,3 +1,14 @@
+arcboot (0.3.11~1.gbpe3aad1) UNRELEASED; urgency=low
+
+  ** SNAPSHOT build @e3aad1ab96912cab45c0c1c6ff3db9808d8c189f **
+
+  * UNRELEASED
+  * [e3aad1a] Update swedish translation (Closes: #491933) - thanks to
+    Martin Bagge
+  * [3fed6f0] fix bugnumber
+
+ -- Guido Guenther <agx@sigxcpu.org>  Wed, 23 Jul 2008 10:29:12 -0400
+
 arcboot (0.3.10) unstable; urgency=low
 
   * Thanks Julien for the NMU!
