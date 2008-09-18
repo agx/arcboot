@@ -1,13 +1,15 @@
-arcboot (0.3.11~1.gbpe3aad1) UNRELEASED; urgency=low
+arcboot (0.3.11) unstable; urgency=low
 
-  ** SNAPSHOT build @e3aad1ab96912cab45c0c1c6ff3db9808d8c189f **
+  * [e3aad1a] Update swedish translation (Closes: #491933) 
+    - thanks to Martin Bagge
+  * [468c15d] Add russion debconf translation (Closes: #495124) 
+    - thanks to Yuri Kozlov
+  * [069c1cd] Update pt translation (Closes: #498650) 
+    - thanks to Miguel Figueiredo
+  * [fde5720] bump standards version
+  * [9f74380] clarify description
 
-  * UNRELEASED
-  * [e3aad1a] Update swedish translation (Closes: #491933) - thanks to
-    Martin Bagge
-  * [3fed6f0] fix bugnumber
-
- -- Guido Guenther <agx@sigxcpu.org>  Wed, 23 Jul 2008 10:29:12 -0400
+ -- Guido Guenther <agx@sigxcpu.org>  Thu, 18 Sep 2008 12:55:44 +0200
 
 arcboot (0.3.10) unstable; urgency=low
 
