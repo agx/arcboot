@@ -1,0 +1,36 @@
+# translation of arcboot-eu-.po to Euskara
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Piarres Beobide <pi@beobide.net>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: arcboot-eu-\n"
+"Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
+"POT-Creation-Date: 2008-01-24 14:06+0000\n"
+"PO-Revision-Date: 2008-09-19 12:41+0200\n"
+"Last-Translator: Piarres Beobide <pi@beobide.net>\n"
+"Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. Type: string
+#. Description
+#: ../templates:1001
+msgid "Location of arcboot:"
+msgstr "Arcboot kokalekua:"
+
+#. Type: string
+#. Description
+#: ../templates:1001
+msgid ""
+"Arcboot must be put into the volume header of a disk with a SGI disklabel. "
+"Usually the volume header of /dev/sda is used. Please give the device name "
+"of the disk you want to put arcboot onto."
+msgstr ""
+"Arcboot SGI diska-etiketa bat duen diskoaren bolumenaren buruan ipini behar da. "
+"Normalean /dev/sda bolumen goiburua erabiltzen da. Mesedez ezarri arcboot ipintzea "
+"nahi duzun gailu edo disko izena."
+
