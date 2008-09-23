@@ -1,16 +1,17 @@
 # arcboot po-debconf translation to Spanish
-# Copyright (C) 2005 Software in the Public Interest
+# Copyright (C) 2005, 2008
 # This file is distributed under the same license as the arcboot package.
 #
 # Changes:
 #  - Initial translation
-#         César Gómez Martín <cesar.gomez@gmail.com>
+#       César Gómez Martín <cesar.gomez@gmail.com>
+#       Francisco Javier Cuadrado <fcocuadrado@gmail.com>
 #
-#   Traductores, si no conoce el formato PO, merece la pena leer la
-#   documentación de gettext, especialmente las secciones dedicadas a este
-#   formato, por ejemplo ejecutando:
-#          info -n '(gettext)PO Files'
-#          info -n '(gettext)Header Entry'
+# Traductores, si no conoce el formato PO, merece la pena leer la
+# documentación de gettext, especialmente las secciones dedicadas a este
+# formato, por ejemplo ejecutando:
+#   info -n '(gettext)PO Files'
+#   info -n '(gettext)Header Entry'
 # Equipo de traducción al español, por favor, lean antes de traducir
 # los siguientes documentos:
 #
@@ -25,37 +26,25 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: arcboot\n"
+"Project-Id-Version: arcboot 0.3.10\n"
 "Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-24 14:06+0000\n"
-"PO-Revision-Date: 2005-10-03 18:36+0100\n"
-"Last-Translator: César Gómez Martín <cesar.gomez@gmail.com>\n"
+"PO-Revision-Date: 2008-09-21 11:15+0100\n"
+"Last-Translator: Francisco Javier Cuadrado <fcocuadrado@gmail.com>\n"
 "Language-Team: Debian l10n spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Spanish\n"
-"X-Poedit-Country: SPAIN\n"
-"X-Poedit-SourceCharset: utf-8\n"
 
 #. Type: string
 #. Description
 #: ../templates:1001
 msgid "Location of arcboot:"
-msgstr ""
+msgstr "Ubicación de arcboot:"
 
 #. Type: string
 #. Description
 #: ../templates:1001
-msgid ""
-"Arcboot must be put into the volume header of a disk with a SGI disklabel. "
-"Usually the volume header of /dev/sda is used. Please give the device name "
-"of the disk you want to put arcboot onto."
-msgstr ""
-"Se debe poner arcboot en la cabecera del volumen de un disco con una "
-"etiqueta SGI. Normalmente la cabecera del volumen de /dev/sda está usada. "
-"Por favor, especifique el nombre del dispositivo del disco en el que quiere "
-"poner arcboot."
+msgid "Arcboot must be put into the volume header of a disk with a SGI disklabel. Usually the volume header of /dev/sda is used. Please give the device name of the disk you want to put arcboot onto."
+msgstr "Se debe poner arcboot en la cabecera del volumen de un disco con una etiqueta SGI. Normalmente la cabecera del volumen de «/dev/sda» está usada. Por favor, especifique el nombre del dispositivo del disco en el que quiere poner arcboot."
 
-#~ msgid "Where to put arcboot?"
-#~ msgstr "¿Dónde desea poner arcboot?"
