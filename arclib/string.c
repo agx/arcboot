@@ -2,10 +2,20 @@
  * Copyright 1999, 2001 Silicon Graphics, Inc.
  * Copyright 2001 Ralf Baechle
  *           2001 Guido Guenther <agx@sgixcpu.org>
+ *           2008 Florian Lohoff <flo@rfc822.org>
  */
 #include "string.h"
-
 #include "stdlib.h"
+
+char *strcat(char *d, char *s) {
+	char	*a;
+
+	for(a=d;*a;a++);
+	for(;*s;*a++=*s++);
+	*a=0x0;
+
+	return d;
+}
 
 size_t strlen(const char *s)
 {
@@ -110,6 +120,21 @@ void *memcpy(void *s1, const void *s2, size_t n)
 	return s1;
 }
 
+void *memmove(void *s1, const void *s2, size_t n)
+{
+	char *c1 = (char *) s1;
+	const char *c2 = (const char *) s2;
+
+	if (s1 < s2)
+		return memcpy(s1, s2, n);
+
+	c1+=n;
+	c2+=n;
+
+	while (n-- > 0)
+		*(--c1) = *(--c2);
+	return s1;
+}
 
 void *memset(void *s, int c, size_t n)
 {
