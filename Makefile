@@ -7,6 +7,19 @@
 # default subarch
 SUBARCH ?= IP22
 
+ifeq ($(SUBARCH),IP22)
+KERNELADDR=0x88002000
+MAXLOADSIZE=0x1700000
+LOADADDR=0x88802000
+OUTPUTFORMAT=ecoff-bigmips
+endif
+ifeq ($(SUBARCH),IP32)
+KERNELADDR=0x80004000
+MAXLOADSIZE=0x1400000
+LOADADDR=0x81404000
+OUTPUTFORMAT=elf32-tradbigmips
+endif
+
 # these contain subarch independent files
 SUBARCH_INDEP_DIRS=	\
 	arclib		\
@@ -50,7 +63,7 @@ $(call dep-tgt,clean)
 endef
 
 define submake
-@$(MAKE) -C $(1) SUBARCH=$(SUBARCH) $(2)
+@$(MAKE) -C $(1) SUBARCH=$(SUBARCH) LOADADDR=$(LOADADDR) MAXLOADSIZE=$(MAXLOADSIZE) KERNELADDR=$(KERNELADDR) OUTPUTFORMAT=$(OUTPUTFORMAT) $(2)
 endef
 
 

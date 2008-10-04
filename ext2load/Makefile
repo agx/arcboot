@@ -36,10 +36,10 @@ ext2load:  $(OBJECTS) $(LIBS) ld.script ../common/subarch.h
 	$(LD) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS)
 
 ld.script: ld.script.in
-	$(MAKE) -C ../common SUBARCH=$(SUBARCH) print_loadaddr
-	LOADADDR=$$(../common/print_loadaddr $(SUBARCH));	 	\
-	OUTPUTFORMAT=$$(../common/print_outputformat $(SUBARCH));	\
-	sed -e "s/@@LOADADDR@@/$$LOADADDR/"				\
+	$(MAKE) -C ../common SUBARCH=$(SUBARCH)
+	LOADADDR=$(LOADADDR);	 				\
+	OUTPUTFORMAT=$(OUTPUTFORMAT);				\
+	sed -e "s/@@LOADADDR@@/$$LOADADDR/"			\
 	-e "s/@@OUTPUTFORMAT@@/$$OUTPUTFORMAT/" <$< >$@
 
 install:

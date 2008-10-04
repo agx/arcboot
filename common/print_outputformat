@@ -1,9 +1,0 @@
-#!/bin/sh
-
-# default to ecoff
-
-case $1 in
-	ip32 | IP32) echo "elf32-tradbigmips" ;;
-	ip22 | IP22) echo "ecoff-bigmips" ;;
-	*) echo "ecoff-bigmips" ;;
-esac

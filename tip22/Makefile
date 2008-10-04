@@ -6,8 +6,6 @@ ARCLIBDIR = ../arclib
 ARCLIB = $(ARCLIBDIR)/libarc.a
 
 COMMONDIR = ../common
-PRINT_LOADADDR = $(COMMONDIR)/print_loadaddr
-PRINT_OUTPUTFORMAT = $(COMMONDIR)/print_outputformat
 
 CFLAGS += -O2 -I$(COMMONDIR) -I$(ARCLIBDIR) -Wall -mno-abicalls -G 0 \
 	-fno-pic -DSUBARCH=${SUBARCH}
@@ -44,9 +42,9 @@ $(PRINT_LOADADDR):
 %.$(SUBARCH).o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-%.script.$(SUBARCH): %.script.in $(PRINT_LOADADDR) $(PRINT_OUTPUTFORMAT)
-	LOADADDR=$$($(PRINT_LOADADDR) $(SUBARCH));	 	\
-	OUTPUTFORMAT=$$($(PRINT_OUTPUTFORMAT) $(SUBARCH));	\
+%.script.$(SUBARCH): %.script.in
+	LOADADDR=$(LOADADDR);					\
+	OUTPUTFORMAT=$(OUTPUTFORMAT);				\
 	sed -e "s/@@LOADADDR@@/$$LOADADDR/"			\
 	-e "s/@@OUTPUTFORMAT@@/$$OUTPUTFORMAT/" <$< >$@
 
