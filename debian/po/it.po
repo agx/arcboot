@@ -1,0 +1,36 @@
+# ITALIAN TRANSLATION OF ARCBOOT'S.PO-DEBCONF FILE
+# Copyright (C) 2008 THE ARCBOOT'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the arcboot package.
+#
+# Vincenzo Campanella <vinz65@gmail.com>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: it\n"
+"Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
+"POT-Creation-Date: 2008-01-24 14:06+0000\n"
+"PO-Revision-Date: 2008-11-16 18:06+0100\n"
+"Last-Translator: Vincenzo Campanella <vinz65@gmail.com>\n"
+"Language-Team: Italian <tp@lists.linux.it>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. Type: string
+#. Description
+#: ../templates:1001
+msgid "Location of arcboot:"
+msgstr "Posizione di arcboot:"
+
+#. Type: string
+#. Description
+#: ../templates:1001
+msgid ""
+"Arcboot must be put into the volume header of a disk with a SGI disklabel. "
+"Usually the volume header of /dev/sda is used. Please give the device name "
+"of the disk you want to put arcboot onto."
+msgstr ""
+"Arcboot deve essere installato nell'intestazione del volume di un disco con "
+"un'etichetta SGI. Normalmente viene usata l'intestazione del volume di /dev/sda. "
+"Inserire il nome del device del disco su cui si vuole installare arcboot."
+
