@@ -1,3 +1,23 @@
+arcboot (0.3.12) unstable; urgency=low
+
+  * [1b7d979] Update cs translation (Closes: #499590) - thanks to Miroslav
+    Kure
+  * [d8db3f3] Add Basque debconf translation (Closes: #499506) - thanks to
+    Piarres Beobide
+  * [e1f509c] Update es translation (Closes: #499871) - thanks to Francisco
+    Javier Cuadrado
+  * [334498a] Update nl translation (Closes: #500511) - thanks to Paul Gevers
+  * [16b1c03] Add Polish debconf translation (Closes: #505865) - thanks to
+    Łukasz Paździora
+  * [3259216] Add nb debconf translation (Closes: Bug#505896) - thanks to
+    Bjørn Steensrud
+  * [3eb29a4] Add italian debconf translation (Closes: Bug#506400) - thanks to
+    vince
+  * [ba76ebd] Update danish translation (Closes: Bug#506422) - thanks to Frank
+    Damgaard
+
+ -- Guido Günther <agx@sigxcpu.org>  Sun, 23 Nov 2008 14:25:43 +0100
+
 arcboot (0.3.11) unstable; urgency=low
 
   * [e3aad1a] Update swedish translation (Closes: #491933) 
