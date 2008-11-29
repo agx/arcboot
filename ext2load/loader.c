@@ -521,10 +521,12 @@ void _start64(LONG argc, CHAR * argv[], CHAR * envp[],
 		"\t.set mips3\n"
 		"\t.set noreorder\n"
 		"\t.set noat\n"
-		"\tld $1, 0($7)\n"
+		"\tld $1, 0(%0)\n"
+		"\tmove $4, %1\n"
+		"\tmove $5, %2\n"
 		"\tjr $1\n"
 		"\t nop\n"
-		"\t.set pop");
+		"\t.set pop": : "r" (addr), "r" (argc), "r" (argv) : "$4", "$5");
 }
 
 void _start(LONG argc, CHAR *argv[], CHAR *envp[])
