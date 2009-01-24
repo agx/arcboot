@@ -1,34 +1,25 @@
+# arcboot Brazilian Portuguese translation
+# Copyright (C) 2008 arcboot's PACKAGE COPYRIGHT HOLDER
+# This file is distributed under the same license as the arcboot package.
+# Eder L. Marques (frolic) <frolic@debian-ce.org>, 2008.
 #
-#    Translators, if you are not familiar with the PO format, gettext
-#    documentation is worth reading, especially sections dedicated to
-#    this format, e.g. by running:
-#         info -n '(gettext)PO Files'
-#         info -n '(gettext)Header Entry'
-#
-#    Some information specific to po-debconf are available at
-#            /usr/share/doc/po-debconf/README-trans
-#         or http://www.debian.org/intl/l10n/po-debconf/README-trans
-#
-#    Developers do not need to manually edit POT or PO files.
-#
-#, fuzzy
 msgid ""
-msgstr ""
-"Project-Id-Version: arcboot_0.3.7\n"
+msgstr "pt_BR utf-8\n"
+"Project-Id-Version: arcboot\n"
 "Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-24 14:06+0000\n"
-"PO-Revision-Date: 2004-01-17 21:15-0300\n"
-"Last-Translator: André Luís Lopes <andrelop@debian.org>\n"
-"Language-Team: Debian-BR Project <debian-l10n-portuguese@lists.debian.org>\n"
+"PO-Revision-Date: 2008-09-19 14:11-0300\n"
+"Last-Translator: Eder L. Marques (frolic) <frolic@debian-ce.org>\n"
+"Language-Team: Brazilian Portuguese <debian-l10n-portuguese@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Type: string
 #. Description
 #: ../templates:1001
 msgid "Location of arcboot:"
-msgstr ""
+msgstr "Localização do arcboot:"
 
 #. Type: string
 #. Description
@@ -38,10 +29,7 @@ msgid ""
 "Usually the volume header of /dev/sda is used. Please give the device name "
 "of the disk you want to put arcboot onto."
 msgstr ""
-"O arcboor deve ser colocado dentro de um cabeçalho de volume de um disco "
-"com um disklabel SGI. Normalmente o cabeçalho de volume de /dev/sda é "
-"usado. Por favor, informe o nome do dispositivo do disco onde você deseja "
-"colocar o arcboot."
-
-#~ msgid "Where to put arcboot?"
-#~ msgstr "Onde colocar o arcboot ?"
+"O arcboot deve ser colocado dentro de um cabeçalho de volume de um disco "
+"com um disklabel SGI. Normalmente o cabeçalho de volume de /dev/sda é usado. "
+"Por favor, forneça o nome do dispositivo do disco onde você deseja colocar o "
+"arcboot."
