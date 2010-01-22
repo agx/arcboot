@@ -1,25 +1,26 @@
 # Vietnamese translation for arcboot.
-# Copyright © 2005 Free Software Foundation, Inc.
-# Clytie Siddall <clytie@riverland.net.au>, 2005.
+# Copyright © 2008 Free Software Foundation, Inc.
+# Clytie Siddall <clytie@riverland.net.au>, 2005-2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: arcboot 0.3.8.6\n"
+"Project-Id-Version: arcboot 0.3.11+nmu1\n"
 "Report-Msgid-Bugs-To: arcboot@packages.debian.org\n"
 "POT-Creation-Date: 2008-01-24 14:06+0000\n"
-"PO-Revision-Date: 2005-06-12 11:33+0930\n"
+"PO-Revision-Date: 2008-12-25 16:49+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
-"Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.8\n"
 
 #. Type: string
 #. Description
 #: ../templates:1001
 msgid "Location of arcboot:"
-msgstr ""
+msgstr "Vị trí của arcboot"
 
 #. Type: string
 #. Description
@@ -29,9 +30,6 @@ msgid ""
 "Usually the volume header of /dev/sda is used. Please give the device name "
 "of the disk you want to put arcboot onto."
 msgstr ""
-"Phải để trình arcboot vào phần đầu khối tin của một đĩa có nhãn đĩa SGI. "
-"Thường dùng phần đầu khối tin của «/dev/sda». Hãy nhập tên thiết bị của đĩa "
-"nơi bạn muốn để trình arcboot."
-
-#~ msgid "Where to put arcboot?"
-#~ msgstr "Bạn có muốn để trình arcboot vào chỗ nào?"
+"Phần mềm arcboot phải nằm trong phần đầu khối tin của một đĩa có nhãn đĩa "
+"SGI. Bình thường dùng phần đầu khối tin của « /dev/sda ». Hãy gõ tên thiết bị "
+"của đĩa trên đó bạn muốn để arcboot."

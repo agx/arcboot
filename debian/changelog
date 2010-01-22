@@ -1,3 +1,19 @@
+arcboot (0.3.12+nmu1) unstable; urgency=low
+  
+  * Non-maintainer upload with maintainer approval.
+  
+  [ Aurelien Jarno ]
+  * Add strcat() and memmove() to arclib/string.c, taken from kernel
+    sources.  (Closes: #564237)
+
+  [ Christian Perrier ]
+  * Fix pending l10n issues. Debconf translations:
+  * Vietnamese (Clytie Siddall).  (Closes: #509712)
+  * Brazilian Portuguese (Eder L. Marques (frolic)).  (Closes: #511883)
+  * Simplified Chinese (Ji ZhengYu).  (Closes: #562063)
+
+ -- Aurelien Jarno <aurel32@debian.org>  Tue, 12 Jan 2010 09:14:33 +0000
+
 arcboot (0.3.12) unstable; urgency=low
 
   * [1b7d979] Update cs translation (Closes: #499590) - thanks to Miroslav
