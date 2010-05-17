@@ -1,3 +1,21 @@
+arcboot (0.3.13) unstable; urgency=low
+
+  [ Florian Lohoff ]
+  * [0b1d5fa] Add strcat and memmove for newer libext2fs
+  * [9b278b0] Remove print_loadaddr and print_outputformat
+  * [857d339] Explicitly give in the args of the start64 asm stub
+  * [e845b67] Drop .gnu.att which is LOAD and virtual address 0
+
+  [ Guido Günther ]
+  * [f2f5a94] Drop duplicate memmove/strcat functions
+  * Acknowledge NMU (Closes: #564920) - thanks Aurelien
+  * [6509fa0] Bump standards version
+  * [2436fa1] Remove Thiemo from uploaders - we miss you!
+  * [34b7c4a] Add homepage link
+  * [8893c6c] Add ${misc:Depends}
+
+ -- Guido Günther <agx@sigxcpu.org>  Mon, 17 May 2010 18:03:52 +0200
+
 arcboot (0.3.12+nmu1) unstable; urgency=low
   
   * Non-maintainer upload with maintainer approval.
