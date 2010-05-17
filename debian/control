@@ -3,7 +3,8 @@ Section: admin
 Priority: optional
 Maintainer: Guido Günther <agx@sigxcpu.org>
 Build-Depends: debhelper (>=4.1.16), e2fslibs-dev
-Vcs-Git: http://honk.sigxcpu.org/git/arcboot.git/
+Vcs-Git: git://honk.sigxcpu.org/git/arcboot.git/
+Homepage: https://honk.sigxcpu.org/piki/projects/arcboot/
 Standards-Version: 3.8.4
 
 Package: arcboot
