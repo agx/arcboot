@@ -149,36 +149,3 @@ void __bzero(char *p, int len)
 {
 	memset(p, 0, len);
 }
-
-char *strcat(char *dest, const char *src)
-{
-	char *tmp = dest;
-
-	while (*dest)
-		dest++;
-	while ((*dest++ = *src++) != '\0')
-		;
-	return tmp;
-}
-
-void *memmove(void *dest, const void *src, size_t count)
-{
-	char *tmp;
-	const char *s;
-
-	if (dest <= src) {
-		tmp = dest;
-		s = src;
-		while (count--)
-			*tmp++ = *s++;
-	} else {
-		tmp = dest;
-		tmp += count;
-		s = src;
-		s += count;
-		while (count--)
-			*--tmp = *--s;
-	}
-	return dest;
-}
-
