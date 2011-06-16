@@ -63,7 +63,8 @@ install: build
 
 	# install tip22 into debian/tip22
 	$(MAKE) PREFIX=${PREFIX_TIP22} BINDIR=${BIN_TIP22} LIBDIR=${LIB_TIP22} -C arclib install
-	$(MAKE) PREFIX=${PREFIX_TIP22} BINDIR=${BIN_TIP22} LIBDIR=${LIB_TIP22} -C tip22 install
+	$(MAKE) SUBARCH=IP22 PREFIX=${PREFIX_TIP22} BINDIR=${BIN_TIP22} LIBDIR=${LIB_TIP22} -C tip22 install
+	$(MAKE) SUBARCH=IP32 PREFIX=${PREFIX_TIP22} BINDIR=${BIN_TIP22} LIBDIR=${LIB_TIP22} -C tip22 install
 
         # Install lintian overrides
 	cp debian/arcboot.lintian-overrides $(CURDIR)/debian/arcboot/usr/share/lintian/overrides/arcboot

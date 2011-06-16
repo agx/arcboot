@@ -1,5 +1,5 @@
 #
-# Copyright 2002-2004 Guido Guenther <agx@sigxcpu.org>
+# Copyright 2002-2004,2011 Guido Guenther <agx@sigxcpu.org>
 #
 
 ARCLIBDIR = ../arclib
@@ -24,20 +24,10 @@ TARGETS = $(OBJECTS) $(LD_SCRIPTS)
 # uncomment for debugging
 #CFLAGS+=-DDEBUG
 
-
-all: ${LIBS} ${BINS}
-	@$(MAKE) SUBARCH=IP32 archall
-	@$(MAKE) SUBARCH=IP22 archall
-
-archall: $(TARGETS)
-
+all: ${LIBS} ${BINS} $(TARGETS)
 
 $(ARCLIB):
 	@$(MAKE) -C $(ARCLIBDIR)
-
-$(PRINT_LOADADDR):
-	@$(MAKE) -C $(COMMONDIR) SUBARCH=$(SUBARCH)
-
 
 %.$(SUBARCH).o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -49,22 +39,12 @@ $(PRINT_LOADADDR):
 	-e "s/@@OUTPUTFORMAT@@/$$OUTPUTFORMAT/" <$< >$@
 
 clean:
-	@$(MAKE) SUBARCH=IP32 archclean
-	@$(MAKE) SUBARCH=IP22 archclean
 	rm -f tags *~
-
-archclean:
-	@$(MAKE) -C $(ARCLIBDIR) clean
-	@$(MAKE) -C $(COMMONDIR) clean
 	rm -f $(TARGETS)
 
 install: all
 	install -d ${PREFIX}/${BINDIR}
 	install -m 755 ${BINS} ${PREFIX}/${BINDIR}
-	@$(MAKE) SUBARCH=IP32 archinstall
-	@$(MAKE) SUBARCH=IP22 archinstall
-
-archinstall:
 	$(foreach tg,$(TARGETS),install -m 644 $(tg) ${PREFIX}/${LIBDIR};)
 
 

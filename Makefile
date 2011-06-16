@@ -24,13 +24,13 @@ endif
 
 # these contain subarch independent files
 SUBARCH_INDEP_DIRS=	\
-	arclib		\
-	tip22
+	arclib
 
 # these contain subarch dependent files
 SUBARCH_DIRS=		\
 	common		\
-	ext2load
+	ext2load        \
+	tip22
 
 define indep-tgt
 $(foreach sd,$(SUBARCH_INDEP_DIRS),$(1)-subarch-indep-$(sd))
