@@ -43,7 +43,7 @@ $(PRINT_LOADADDR):
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 %.script.$(SUBARCH): %.script.in
-	LOADADDR=$(LOADADDR);					\
+	LOADADDR=$(TIP_LOADADDR);				\
 	OUTPUTFORMAT=$(OUTPUTFORMAT);				\
 	sed -e "s/@@LOADADDR@@/$$LOADADDR/"			\
 	-e "s/@@OUTPUTFORMAT@@/$$OUTPUTFORMAT/" <$< >$@
