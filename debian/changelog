@@ -1,3 +1,12 @@
+arcboot (0.3.14) unstable; urgency=low
+
+  * [01c99b5] Move the tip22 image to 0x89702000 on IP22 as described in
+    #452798. Thanks to Edwin Kwan for analyzing this.
+  * [399eff1] Fix address substitution for IP32 it was being handled as IP22
+    in tip22.
+
+ -- Guido Günther <agx@sigxcpu.org>  Thu, 16 Jun 2011 23:38:40 +0200
+
 arcboot (0.3.13) unstable; urgency=low
 
   [ Florian Lohoff ]
