@@ -44,9 +44,10 @@ clean:
 	dh_testdir
 	rm -f build-stamp configure-stamp
 
-	# Add here commands to clean up after the build process.
-	$(MAKE) clean
+	$(MAKE) SUBARCH=IP32 clean
+	$(MAKE) SUBARCH=IP22 clean
 	rm -f arcboot.ip22 arcboot.ip32
+
 
 	dh_clean
 
