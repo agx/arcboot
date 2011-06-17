@@ -513,7 +513,8 @@ void printCmdLine(int argc, CHAR *argv[])
 	printf("%u: %s\n\r", i, argv[i]);
 }
 
-void _start64(LONG argc, CHAR * argv[], CHAR * envp[],
+void _start64(LONG argc,
+              CHAR * argv[],
 	      unsigned long long *addr)
 {
 	__asm__ __volatile__(
@@ -618,7 +619,7 @@ void _start(LONG argc, CHAR *argv[], CHAR *envp[])
 	    } else {
 		printf("Starting ELF64 kernel\n\r");
 		ArcFlushAllCaches();
-		_start64(nargc, nargv, envp, &kernel_entry64);
+		_start64(nargc, nargv, &kernel_entry64);
 	    }
 	} else {
 		printf("Invalid kernel entry NULL\n\r");

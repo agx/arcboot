@@ -670,8 +670,11 @@ arc_read_blk(io_channel channel, unsigned long block, int count, void *buf)
 }
 
 static errcode_t
-arc_write_blk (io_channel channel, unsigned long block, int count,
-    const void *buf) {
+arc_write_blk (io_channel channel,
+               unsigned long block, 
+               int count __attribute__((unused)),
+               const void *buf __attribute__((unused)))
+{
 	struct arc_private_data *priv;
 	errcode_t status;
 
@@ -717,7 +720,7 @@ static errcode_t arc_flush(io_channel channel)
 
 
 /* Hack in some stuff to make ext2fs library work */
-time_t time(time_t *t)
+time_t time(time_t *t __attribute__((unused)))
 {
 	return 0;
 }
@@ -742,7 +745,10 @@ struct et_list {
 };
 struct et_list *_et_list = NULL;
 
-void com_err(const char *whoami, long error, const char *format, ...)
+void com_err(const char *whoami __attribute__((unused)),
+             long error,
+             const char *format __attribute__((unused)),
+             ...)
 {
 	printf("com_err called with %lu\n", error);
 }
