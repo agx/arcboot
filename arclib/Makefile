@@ -1,7 +1,7 @@
 #
 # Copyright 1999 Silicon Graphics, Inc.
 #
-CFLAGS += -O2 -Werror -Wall -mno-abicalls -G 0 -fno-pic
+CFLAGS += -O2 -Werror -Wextra -Wall -mno-abicalls -G 0 -fno-pic
 
 TARGETS = libarc.a
 OBJECTS = arc.o	stdio.o stdlib.o string.o

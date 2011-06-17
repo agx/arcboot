@@ -20,7 +20,7 @@ LIBS = $(EXT2LIB) $(ARCLIB)
 TARGETS = ext2load 
 
 CFLAGS = -O2 -I$(COMMONDIR) -I$(ARCINCLUDEDIR) -I$(E2FSINCLUDEDIR) 	\
-         -W -Wall -mno-abicalls -G 0 -fno-pic				\
+         -Wextra -Wall -mno-abicalls -G 0 -fno-pic			\
 	 -DSUBARCH=${SUBARCH} -fno-strict-aliasing
 
 # uncomment for debugging
