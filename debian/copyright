@@ -8,6 +8,15 @@ Upstream Authors: Ralf Baechle, Guido Günther
 
 Copyright:
 
+ (C) 1999 Silicon Graphics, Inc.
+ (C) 2001 Ralf Baechle
+ (C) 1993, 1994, 1995 Theodore Ts'o.
+ (C) 2004 by Thiemo Seufer
+ (C) 2008 Florian Lohoff <flo@rfc822.org>
+ (C) 2002-2004,2011 Guido Guenther <agx@sigxcpu.org>
+
+Licenses:
+
  You are free to distribute this software under the terms of the GNU General
  Public License. The full text of this license can be found in the file
  /usr/share/common-licenses/GPL
