@@ -74,5 +74,6 @@ SECTIONS
         *(.comment*)
         *(.gptab*)
         *(.note)
+        *(.gnu.att*)
   }
 }
