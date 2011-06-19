@@ -5,7 +5,7 @@ Maintainer: Guido Günther <agx@sigxcpu.org>
 Build-Depends: debhelper (>=4.1.16), e2fslibs-dev
 Vcs-Git: git://honk.sigxcpu.org/git/arcboot.git/
 Homepage: https://honk.sigxcpu.org/piki/projects/arcboot/
-Standards-Version: 3.8.4
+Standards-Version: 3.9.2
 
 Package: arcboot
 Architecture: mips
