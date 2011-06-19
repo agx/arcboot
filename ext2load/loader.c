@@ -512,6 +512,7 @@ void _start64(LONG argc,
               CHAR * argv[],
 	      unsigned long long *addr)
 {
+#if (defined __mips__) || (defined __mipsel__)
 	__asm__ __volatile__(
 		".set push\n"
 		"\t.set mips3\n"
@@ -523,6 +524,9 @@ void _start64(LONG argc,
 		"\tjr $1\n"
 		"\t nop\n"
 		"\t.set pop": : "r" (addr), "r" (argc), "r" (argv) : "$4", "$5");
+#else
+# warning	"No kernel entry defined"
+#endif
 }
 
 void _start(LONG argc, CHAR *argv[], CHAR *envp[])
