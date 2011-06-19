@@ -1,3 +1,23 @@
+arcboot (0.3.15) unstable; urgency=low
+
+  * [7154bce] Cleanup all subarches
+  * [804c3aa] Use -Wextra
+  * [f628a0e] Mark unused parameters as __attribute__((unused)) or remove them
+    if not part of the ext2lib ABI
+  * [77a5233] Switch to source format 3.0 (native)
+  * [dbf6fd9] Bump standards version (no changes)
+  * [662b81a] Update debian/copyright
+  * [8e0eadf] postinst: Drop path from arcboot invocation
+  * [83171b6] overrides: remove ./ from paths to catch up with ftp-master
+    changes
+  * [bb6bd2f] Reduced amount of #ifdef'ed code
+  * [5184fe4] Split CFLAGS to ease compilation on other platforms
+  * [aaab7cb] Ease building on non MIPS platforms
+  * [0b76795] Disable strict-aliasing as in arcboot
+  * [61418bf] Drop .gnu.att section mapped add VMA 0
+
+ -- Guido Günther <agx@sigxcpu.org>  Sun, 19 Jun 2011 17:08:14 +0200
+
 arcboot (0.3.14) unstable; urgency=low
 
   * [01c99b5] Move the tip22 image to 0x89702000 on IP22 as described in
