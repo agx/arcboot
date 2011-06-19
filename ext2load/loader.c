@@ -20,6 +20,7 @@
 #include "arcboot.h"
 
 #include <subarch.h>
+#include <debug.h>
 
 #define KSEG0ADDR(addr)	(((addr) & 0x1fffffff) | 0x80000000)
 
@@ -76,9 +77,7 @@ void InitMalloc(void)
 {
 	MEMORYDESCRIPTOR *current = NULL;
 	ULONG stack = (ULONG) &current;
-#ifdef DEBUG
-	printf("stack starts at: 0x%lx\n\r", stack);
-#endif
+	debug_printf("stack starts at: 0x%lx\n\r", stack);
 
 	current = ArcGetMemoryDescriptor(current);
 	if(! current ) {
@@ -96,10 +95,8 @@ void InitMalloc(void)
 			ULONG start = KSEG0ADDR(current->BasePage * PAGE_SIZE);
 			ULONG end =
 			    start + (current->PageCount * PAGE_SIZE);
-#if DEBUG
-			printf("Free Memory(%u) segment found at (0x%lx,0x%lx).\n\r",
+			debug_printf("Free Memory(%u) segment found at (0x%lx,0x%lx).\n\r",
 					current->Type, start, end); 
-#endif
 
 			/* Leave some space for our stack */
 			if ((stack >= start) && (stack < end))
@@ -118,10 +115,8 @@ void InitMalloc(void)
 					    + kernel_load[SUBARCH].reserved ))) 
 				end = kernel_load[SUBARCH].base;
 			if (end > start) {
-#ifdef DEBUG
-				printf("Adding %lu bytes at 0x%lx to the list of available memory\n\r", 
+				debug_printf("Adding %lu bytes at 0x%lx to the list of available memory\n\r",
 						end-start, start);
-#endif
 				arclib_malloc_add(start, end - start);
 			}
 		}
@@ -561,10 +556,8 @@ void _start(LONG argc, CHAR *argv[], CHAR *envp[])
 
 	if (OSLoadPartition == NULL)
 		Fatal("Invalid load partition\n\r");
-#if DEBUG
-	printf("OSLoadPartition: %s\n\r", OSLoadPartition);
-	printf("OSLoadFilename: %s\n\r", OSLoadFilename);
-#endif
+	debug_printf("OSLoadPartition: %s\n\r", OSLoadPartition);
+	debug_printf("OSLoadFilename: %s\n\r", OSLoadFilename);
 	/*
 	 * XXX: let's play stupid for now: assume /etc/arcboot.conf
 	 * is on OSLoadPartition

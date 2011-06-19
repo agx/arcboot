@@ -17,6 +17,7 @@
 #include <ext2_fs.h>
 #include <ext2fs.h>
 #include <arc.h>
+#include <debug.h>
 
 /*
  * All About the Cache
@@ -596,9 +597,7 @@ arc_read_blk(io_channel channel, unsigned long block, int count, void *buf)
 	priv = (struct arc_private_data *) channel->private_data;
 	EXT2_CHECK_MAGIC(priv, EXT2_ET_BAD_MAGIC);
 
-#ifdef DEBUG
-	printf("req %lu id %lu count %u\n\r", block, priv->fileID, count);
-#endif
+	debug_printf("req %lu id %lu count %u\n\r", block, priv->fileID, count);
 
 	/* Odd-sized reads can't be cached. */
 	if (count < 0)
@@ -607,9 +606,7 @@ arc_read_blk(io_channel channel, unsigned long block, int count, void *buf)
 	while (count > 0) {
 		if ((cache = find_cached_block(priv, block)) == NULL)
 			break;
-#ifdef DEBUG
-		printf("Cache hit on block %lu\n\r", block);
-#endif
+		debug_printf("Cache hit on block %lu\n\r", block);
 		memcpy(cbuf, cache->buf, channel->block_size);
 		count--;
 		block++;
@@ -626,15 +623,11 @@ arc_read_blk(io_channel channel, unsigned long block, int count, void *buf)
 	 * for reads we expect are not part of a sequential set.
 	 */
 	while (count > 0) {
-#ifdef DEBUG
-		printf("Cache miss on block %lu (readahead %u)\n\r",
+		debug_printf("Cache miss on block %lu (readahead %u)\n\r",
 		    block, CACHE_SG_MAX);
-#endif
 		if ((cb_alloc = alloc_sg_blocks(channel, priv, block,
 		    CACHE_SG_MAX)) == 0) {
-#ifdef DEBUG
-			printf("%s\n\r", "Cache error: can't alloc any blocks");
-#endif
+			debug_printf("%s\n\r", "Cache error: can't alloc any blocks");
 			/* Cache is broken, so do the raw read. */
 			cache_invalidate(channel, priv);
 			status = raw_read_blk(channel, priv, block, count,
@@ -643,10 +636,8 @@ arc_read_blk(io_channel channel, unsigned long block, int count, void *buf)
 		}
 
 		if ((status = fill_sg_blocks(channel, priv, cb_alloc)) != 0) {
-#ifdef DEBUG
-			printf("Cache error (status %lu at block %lu(%u)\n\r",
+			debug_printf("Cache error (status %lu at block %lu(%u)\n\r",
 			    (unsigned long) status, block, count);
-#endif
 			/* Cache is broken, so do the raw read. */
 			cache_invalidate(channel, priv);
 			status = raw_read_blk(channel, priv, block, count,

@@ -18,6 +18,7 @@
 
 #include <version.h>
 #include <subarch.h>
+#include <debug.h>
 
 #define KSEG0ADDR(addr)	(((addr) & 0x1fffffff) | 0x80000000)
 
@@ -63,9 +64,7 @@ static void InitMalloc(void)
 {
 	MEMORYDESCRIPTOR *current = NULL;
 	ULONG stack = (ULONG) & current;
-#ifdef DEBUG
-	printf("stack starts at: 0x%lx\n\r", stack);
-#endif
+	debug_printf("stack starts at: 0x%lx\n\r", stack);
 
 	current = ArcGetMemoryDescriptor(current);
 	if(! current ) {
@@ -83,10 +82,8 @@ static void InitMalloc(void)
 			ULONG start = KSEG0ADDR(current->BasePage * PAGE_SIZE);
 			ULONG end =
 			    start + (current->PageCount * PAGE_SIZE);
-#if DEBUG
-			printf("Free Memory(%u) segment found at (0x%lx,0x%lx).\n\r",
+			debug_printf("Free Memory(%u) segment found at (0x%lx,0x%lx).\n\r",
 					current->Type, start, end); 
-#endif
 
 			/* Leave some space for our stack */
 			if ((stack >= start) && (stack < end))
@@ -105,10 +102,8 @@ static void InitMalloc(void)
 					    + kernel_load[SUBARCH].reserved ))) 
 				end = kernel_load[SUBARCH].base;
 			if (end > start) {
-#ifdef DEBUG
-				printf("Adding %lu bytes at 0x%lx to the list of available memory\n\r", 
+				debug_printf("Adding %lu bytes at 0x%lx to the list of available memory\n\r",
 						end-start, start);
-#endif
 				arclib_malloc_add(start, end - start);
 			}
 		}
@@ -302,21 +297,21 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 	void (*kernel_entry)(int argc, CHAR * argv[], CHAR * envp[]);
 
 	/* Print identification */
+	printf(ANSI_CLEAR "\n\r"
 #if (SUBARCH == IP22)
-	printf(ANSI_CLEAR "\n\rtip22: IP22 Linux tftpboot loader " __ARCSBOOT_VERSION__ "\n\r");
+               "tip22: IP22"
 #elif (SUBARCH == IP32)
-	printf(ANSI_CLEAR "\n\rtip32: IP32 Linux tftpboot loader " __ARCSBOOT_VERSION__ "\n\r");
+               "tip32: IP32"
 #endif
+               " Linux tftpboot loader " __ARCSBOOT_VERSION__ "\n\r");
 
 	InitMalloc();
 
 	/* copy kernel and ramdisk to its load addresses */
-#ifdef DEBUG
-	printf("Embedded kernel image starts 0x%p, ends 0x%p\n\r", 
+	debug_printf("Embedded kernel image starts 0x%p, ends 0x%p\n\r",
 			&__kernel_start, &__kernel_end);
-	printf("Embedded ramdisk image starts 0x%p, ends 0x%p\n\r", 
+	debug_printf("Embedded ramdisk image starts 0x%p, ends 0x%p\n\r",
 			&__rd_start, &__rd_end);
-#endif
 	kernel_entry = (void (*)(int, CHAR *[], CHAR *[]))CopyKernel(&kernel_end);
 
 	/* align to page boundary */
@@ -343,8 +338,8 @@ void _start(LONG argc, CHAR * argv[], CHAR * envp[])
 		nargc++;
 	}
 
+	debug_printf("Arguments passed to kernel:\n\r");
 #ifdef DEBUG
-	printf("Arguments passed to kernel:\n\r");
 	for(i = 0; i < nargc; i++ )
 		printf("%u: %s\n\r", i, nargv[i]);
 	Wait("\n\r--- Debug: press <spacebar> to boot kernel ---");
