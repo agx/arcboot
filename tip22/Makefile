@@ -12,7 +12,7 @@ WARN_CFLAGS = -Wextra -Wall
 # uncomment for debugging
 #DEBUG_CFLAGS = -DDEBUG
 CFLAGS += -O2 -I$(COMMONDIR) -I$(ARCLIBDIR) \
-	  -DSUBARCH=${SUBARCH} \
+	  -DSUBARCH=${SUBARCH} -fno-strict-aliasing \
 	  $(WARN_CFLAGS) $(MIPS_CFLAGS) $(DEBUG_CFLAGS)
 
 ASFLAGS = -O2 -mno-abicalls -G 0 -fno-pic
