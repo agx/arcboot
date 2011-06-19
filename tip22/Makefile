@@ -7,8 +7,13 @@ ARCLIB = $(ARCLIBDIR)/libarc.a
 
 COMMONDIR = ../common
 
-CFLAGS += -O2 -I$(COMMONDIR) -I$(ARCLIBDIR) -Wall -mno-abicalls -G 0 \
-	-fno-pic -DSUBARCH=${SUBARCH}
+MIPS_CFLAGS = -mno-abicalls -G 0 -fno-pic
+WARN_CFLAGS = -Wextra -Wall
+# uncomment for debugging
+#DEBUG_CFLAGS = -DDEBUG
+CFLAGS += -O2 -I$(COMMONDIR) -I$(ARCLIBDIR) \
+	  -DSUBARCH=${SUBARCH} \
+	  $(WARN_CFLAGS) $(MIPS_CFLAGS) $(DEBUG_CFLAGS)
 
 ASFLAGS = -O2 -mno-abicalls -G 0 -fno-pic
 

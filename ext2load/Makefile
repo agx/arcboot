@@ -19,12 +19,14 @@ OBJECTS = loader.o ext2io.o conffile.o
 LIBS = $(EXT2LIB) $(ARCLIB)
 TARGETS = ext2load 
 
-CFLAGS = -O2 -I$(COMMONDIR) -I$(ARCINCLUDEDIR) -I$(E2FSINCLUDEDIR) 	\
-         -Wextra -Wall -mno-abicalls -G 0 -fno-pic			\
-	 -DSUBARCH=${SUBARCH} -fno-strict-aliasing
-
+MIPS_CFLAGS = -mno-abicalls -G 0 -fno-pic
+WARN_CFLAGS = -Wextra -Wall
 # uncomment for debugging
-#CFLAGS+=-DDEBUG
+#DEBUG_CFLAGS = -DDEBUG
+
+CFLAGS = -O2 -I$(COMMONDIR) -I$(ARCINCLUDEDIR) -I$(E2FSINCLUDEDIR) \
+	 -DSUBARCH=${SUBARCH} -fno-strict-aliasing \
+	 $(WARN_CFLAGS) $(MIPS_CFLAGS) $(DEBUG_CFLAGS)
 
 LD = ld
 LDFLAGS = -N -T ld.script
