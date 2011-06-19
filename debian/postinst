@@ -22,7 +22,7 @@ label=linux
   append="root=$ROOTDEVICE"
 EOF
 	fi
-    	/usr/sbin/arcboot $RET
+	arcboot $RET
 
     ;;
 
