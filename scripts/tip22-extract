@@ -1,0 +1,124 @@
+#!/usr/bin/python
+# vim: set fileencoding=utf-8 :
+#
+# (C) 2011 Guido Guenther <agx@sigxcpu.org>
+#     2011 Christoph Göhre <chris@sigxcpu.org>
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# Extract kernel and initramfs from a tip22 ECOFF boot image
+
+import re
+import subprocess
+import sys
+
+from optparse import OptionParser
+
+OBJDUMP="/usr/bin/objdump"
+BLOCKSIZE=4096
+
+def extract_blob(binary, vma, offset, start, end, out):
+    fs = offset + start - vma
+    length = end - start
+
+    b = file(binary, 'rb')
+    o = file(out, 'wb')
+    b.seek(fs)
+
+    print "In: %s, length: %d, out: %s" % (binary, length, out)
+    while length > 0:
+        l = [length, BLOCKSIZE][length > BLOCKSIZE]
+        data = b.read(l)
+        o.write(data)
+        length -= BLOCKSIZE
+
+    b.close()
+    o.close()
+
+
+def parse_objdump_headers(image):
+    """Determine vma and offset"""
+    segment_re = re.compile(".* \.data\s+[0-9a-f]{8}\s+(?P<vma>[0-9a-f]{8})\s+[0-9a-f]{8}\s+(?P<offset>[0-9a-f]{8})\s+")
+    vma, offset = None, None
+
+    output = subprocess.Popen([OBJDUMP, "-h", image], stdout=subprocess.PIPE).stdout
+    for line in output:
+        m = segment_re.match(line)
+        if m:
+            vma = int(m.group("vma"), 16)
+            offset = int(m.group("offset"), 16)
+            break
+    return (vma, offset)
+
+
+def parse_objdump_symbols(image):
+    """Determine kernel and initrd start and end, vma and offset"""
+
+    symbol_re = re.compile(".* [a-z] (?P<addr>[a-f0-9]{16}) .* (?P<name>__[a-z]+_(start|end))")
+    symbols = { "__rd_start": None,
+                "__rd_end": None,
+                "__kernel_start": None,
+                "__kernel_end": None, }
+
+    output = subprocess.Popen([OBJDUMP, "-t", image], stdout=subprocess.PIPE).stdout
+    for line in output:
+        m = symbol_re.match(line)
+        if m:
+            name = m.group("name")
+            if name in symbols:
+                symbols[name] = int(m.group("addr"), 16)
+            continue
+    return symbols
+
+
+def main(argv):
+    usage = """%prog <tip22image>
+
+%prog extracts kernel and initramfs out of a tip22 image and stores the them in
+files named 'kernel.img' and 'initrd.img' respectively"""
+
+    parser = OptionParser(usage)
+    options, args = parser.parse_args(argv[1:])
+    if len(args) != 1:
+        parser.print_usage()
+        return 1
+    else:
+        image = args[0]
+
+    vma, offset = parse_objdump_headers(image)
+    if not vma or not offset:
+        print >>sys.stderr, "Couldn't parse headers."
+        return 1
+
+    symbols = parse_objdump_symbols(image)
+
+    print "vma: 0x%x, offset: 0x%x" % (vma, offset)
+    print ("__kernel_start: 0x%(__kernel_start)x\n"
+           "__kernel_end:   0x%(__kernel_end)x\n"
+           "__rd_start:     0x%(__rd_start)x\n"
+           "__rd_end:       0x%(__rd_end)x" % symbols)
+
+    extract_blob(image, vma, offset, symbols["__kernel_start"],
+                                     symbols["__kernel_end"],
+                                     "kernel.img")
+    extract_blob(image, vma, offset, symbols["__rd_start"],
+                                     symbols["__rd_end"],
+                                     "initrd.img")
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
+
+# vim:et:ts=4:sw=4:et:sts=4:ai:set list listchars=tab\:»·,trail\:·:
